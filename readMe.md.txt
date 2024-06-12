@@ -1,2 +1,0 @@
-Uname: 	smart 
-Pw:	cities
