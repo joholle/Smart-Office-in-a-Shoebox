@@ -15,6 +15,8 @@
 
 DHT dht(DHT_SENSOR_PIN, DHTTYPE);
 Servo servo;
+String input = "";
+bool stringComplete = false;
 
 void setup() {
   Serial.begin(9600);
@@ -23,25 +25,43 @@ void setup() {
 }
 
 void loop() {
-    float temperature = dht.readTemperature();
-    float humidity = dht.readHumidity();
-    int light = analogRead(LIGHT_SENSOR_PIN);
-    int water = analogRead(WATER_SENSOR_PIN);
+  if (stringComplete) {
+    if (input == "read\n") {
+      float temperature = dht.readTemperature();
+      float humidity = dht.readHumidity();
+      int light = analogRead(LIGHT_SENSOR_PIN);
+      int water = analogRead(WATER_SENSOR_PIN);
 
-    JsonDocument doc;
-    doc["temperature"] = isnan(temperature) ? -1 : temperature;
-    doc["humidity"] = isnan(humidity) ? -1 : humidity;
-    doc["light"] = light;
-    doc["water"] = water;
+      JsonDocument doc;
+      doc["temperature"] = isnan(temperature) ? -1 : temperature;
+      doc["humidity"] = isnan(humidity) ? -1 : humidity;
+      doc["light"] = light;
+      doc["water"] = water;
 
-    serializeJson(doc, Serial);
-    Serial.println();
-
-    delay(500);
+      serializeJson(doc, Serial);
+      Serial.println();
+    } else if (input.startsWith("servo ")) {
+      int degrees = 
+      Serial.println("writing");
+    }
     // for (int i = 0; i < 30; i++) {
     //     servo.write(i*60);
     //     delay(100);
     // }
+
+    input = "";
+    stringComplete = false;
+  }
+}
+
+void serialEvent() {
+  while (Serial.available()) {
+    char inChar = (char) Serial.read();
+    input += inChar;
+    if (inChar == '\n') {
+      stringComplete = true;
+    }
+  }
 }
 
 /// Circuits:
