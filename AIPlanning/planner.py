@@ -215,3 +215,7 @@ problem = Problem(
 problem_file = open("problem.pddl", "w")
 problem_file.write(problem_to_string(problem))
 problem_file.close()
+
+
+import os
+os.system(".\\metric-ff-crossplatform-main\\ff-v2.1.exe -o domain.pddl -f problem.pddl -s 0 >> plan.txt")
