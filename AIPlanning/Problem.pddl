@@ -1,38 +1,6 @@
-(define (problem pleasant_room) (:domain office_space)
-
-(:init
-    ;------ werden im template (durch verändern der Zahl) gesetzt ----
-    (= (light) 5) 
-    (= (humidity) 5)
-    (= (inside_temp) 5)
-    (= (water_level) 5)
-
-    ; (wetter api)
-    (= (outside_temp) 5)
-    
-    ;------ werden im template (durch auskommentieren/einkommentieren) gesetzt ----
-    ; (wetter api)
-    (is_raining)
-
-    (force_light)
-    (force_window)
-    (force_cooler)
-    (force_water)
-
-    ;------ aktueller status, der vom letzten plan übernommen wird ----
-    (light_on)
-    (windows_open)
-    (air_cooler_on)
-    (water_spender_on)
-)
-
-(:goal (or
-    (light_action_done)
-    (window_action_done)
-    (water_action_done)
-    (cooler_action_done)
-    (no_action_possible)
-))
-
-
+(define (problem pleasant_office_room)
+    (:domain office_room)
+    (:requirements :conditional-effects :disjunctive-preconditions :equality :fluents :negative-preconditions :strips :typing)
+    (:init (= (humidity) 5) (= (inside_temp) 5) (= (light) 5) (= (outside_temp) 5) (= (water_level) 5) (air_cooler_on) (light_on) (not (force_cooler)) (not (force_light)) (not (force_water)) (not (force_window)) (water_spender_on) (windows_open))
+    (:goal (or (light_action_done) (window_action_done) (water_action_done) (cooler_action_done) (no_action_possible)))
 )
