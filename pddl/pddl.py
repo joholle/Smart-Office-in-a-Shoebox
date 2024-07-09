@@ -1,5 +1,5 @@
-from parser import PDDL_Parser
-from planner import Planner
+from .parser import PDDL_Parser
+from .planner import Planner
 
 class PDDL:
     def __init__(self, domain_path, problem_path):

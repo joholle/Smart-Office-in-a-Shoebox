@@ -21,6 +21,16 @@ class ArduinoSerial:
                 self.ser.write(b"servo %d   \n" % degree)
             else:
                 print("Invalid degree for servo")
+        elif msg == "fan on":
+            self.ser.write(b"fan on\n")
+        elif msg == "fan off":
+            self.ser.write(b"fan off\n")
+        elif msg == "cooler on":
+            self.ser.write(b"cooler on\n")
+        elif msg == "cooler off":
+            self.ser.write(b"cooler off\n")
+        else:
+            print("invalid arduinoSerial.write argument: " + msg)
 
     def rotate_servo(self, degree):
         self.write("servo " + str(degree))

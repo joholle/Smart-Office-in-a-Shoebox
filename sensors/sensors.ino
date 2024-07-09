@@ -8,8 +8,10 @@
 
 #define WATER_SENSOR_PIN A0
 #define LIGHT_SENSOR_PIN A1
-#define SERVO_PIN 3
 #define DHT_SENSOR_PIN 2
+#define SERVO_PIN 3
+#define COOLER_PIN 4
+#define FAN_PIN 5
 #define DHTTYPE DHT11
 
 
@@ -17,11 +19,19 @@ DHT dht(DHT_SENSOR_PIN, DHTTYPE);
 Servo servo;
 String input = "";
 bool string_complete = false;
+int servo_degree = 0;
+bool is_fan_active = false;
+bool is_cooler_active = false;
 
 void setup() {
   Serial.begin(9600);
   servo.attach(SERVO_PIN);
+  servo.write(servo_degree);
+  delay(100);
   dht.begin();
+
+  digitalWrite(COOLER_PIN, LOW);
+  digitalWrite(FAN_PIN, LOW);
 }
 
 void loop() {
@@ -38,21 +48,36 @@ void loop() {
       doc["light"] = light;
       doc["water"] = water;
       doc["servo"] = servo_degree;
+      doc["fan"] = is_fan_active;
+      doc["cooler"] = is_cooler_active;
 
       serializeJson(doc, Serial);
       Serial.println();
     } else if (input.startsWith("servo ")) {
-      int degrees = 
-      Serial.println("writing");
+      servo_degree = input.substring(6, 10).toInt();
+      servo.write(servo_degree);
+      delay(100);
+    } else if (input == "fan on\n") {
+      is_fan_active = true;
+      digitalWrite(FAN_PIN, HIGH);
+    } else if (input == "fan off\n") {
+      is_fan_active = false;
+      digitalWrite(FAN_PIN, LOW);
+    } else if (input == "cooler on\n") {
+      is_cooler_active = true;
+      digitalWrite(COOLER_PIN, HIGH);
+    } else if (input == "cooler off\n") {
+      is_cooler_active = false;
+      digitalWrite(COOLER_PIN, LOW);
     }
-    // for (int i = 0; i < 30; i++) {
-    //     servo.write(i*60);
-    //     delay(100);
-    // }
 
     input = "";
     string_complete = false;
   }
+  // for (int i = 0; i < 30; i++) {
+  //     servo.write(i*60);
+  //     delay(100);
+  // }
 }
 
 void serialEvent() {
