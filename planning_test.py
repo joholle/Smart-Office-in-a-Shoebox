@@ -1,11 +1,12 @@
 from AIPlanning.planner import Planner
+import time
 
 planner = Planner()
 
-internal_state = {  "light_on" : False,
-                    "windows_open" : False,
-                    "air_cooler_on" : False,
-                    "water_spender_on" : False
+internal_state = {  "light_on" : True,
+                    "windows_open" : True,
+                    "air_cooler_on" : True,
+                    "water_spender_on" : True
                     }
 
 def update_state(action):
@@ -59,7 +60,13 @@ while True:
 
     action = planner.solve()[0]
 
+    print(action)
+
     update_state(action)
+
+    print(internal_state)
+
+    time.sleep(3)
 
     
 
