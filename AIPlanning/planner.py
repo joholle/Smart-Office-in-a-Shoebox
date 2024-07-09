@@ -44,9 +44,9 @@ class Planner:
                         break
                     if ":" not in line:
                         break
-                    actions.append(line.strip()[line.strip().find(":")+2:])
+                    actions.append(line.strip()[line.strip().find(":")+2:].lower())
                 elif "step" in line:
-                    actions.append(line.strip()[line.strip().find(":")+2:])
+                    actions.append(line.strip()[line.strip().find(":")+2:].lower())
                     step_found = True
         
         return actions
