@@ -16,7 +16,7 @@
 DHT dht(DHT_SENSOR_PIN, DHTTYPE);
 Servo servo;
 String input = "";
-bool stringComplete = false;
+bool string_complete = false;
 
 void setup() {
   Serial.begin(9600);
@@ -25,7 +25,7 @@ void setup() {
 }
 
 void loop() {
-  if (stringComplete) {
+  if (string_complete) {
     if (input == "read\n") {
       float temperature = dht.readTemperature();
       float humidity = dht.readHumidity();
@@ -37,6 +37,7 @@ void loop() {
       doc["humidity"] = isnan(humidity) ? -1 : humidity;
       doc["light"] = light;
       doc["water"] = water;
+      doc["servo"] = servo_degree;
 
       serializeJson(doc, Serial);
       Serial.println();
@@ -50,16 +51,16 @@ void loop() {
     // }
 
     input = "";
-    stringComplete = false;
+    string_complete = false;
   }
 }
 
 void serialEvent() {
   while (Serial.available()) {
-    char inChar = (char) Serial.read();
-    input += inChar;
-    if (inChar == '\n') {
-      stringComplete = true;
+    char in_char = (char) Serial.read();
+    input += in_char;
+    if (in_char == '\n') {
+      string_complete = true;
     }
   }
 }
@@ -79,6 +80,11 @@ void serialEvent() {
 // 5V -> +
 // A0 -> S
 // gnd -> -
+//
+// Servo:
+// 3 -> yellow
+// 5V -> red
+// gnd -> brown
 
 // < 100 with no water
 // ~ 500 with water

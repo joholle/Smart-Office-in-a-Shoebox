@@ -7,3 +7,4 @@
 1719663435: Opening ipv6 listen socket on port 1883.
 1719663435: Error: Address already in use
 1719663435: mosquitto version 2.0.11 running
+1719666737: Reloading config.
