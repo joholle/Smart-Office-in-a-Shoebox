@@ -1,4 +1,3 @@
-from pddl.pddl import PDDL
 from mqtt.mqtt import MQTT
 from interfaceSC import Interface
 import json, time
@@ -38,36 +37,47 @@ class Laptop:
         self.id = 0
         self.old_messages = []
         self.outside_temp = 20
+        self.is_raining = False
+
+        self.planner = Planner()
+        self.internal_state = { "light_on" : False,
+                                "windows_open" : False,
+                                "air_cooler_on" : False,
+                                "water_spender_on" : False
+                                }
 
         self.interface = Interface()
         self.interface.start_loop(self.update)
 
-        self.planner = Planner()
-        self.internal_state = { "light_on" : True,
-                                "windows_open" : True,
-                                "air_cooler_on" : True,
-                                "water_spender_on" : True
-                                }
 
     def update(self):
         readings = self.get_readings()
+        if readings is None:
+            return self.interface.update_status(self.update, readings)
 
         try:
-            response = requests.get("https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=0e6e446d1e4dba85c052351ca6b2bf40&units=metric")
+            response = requests.get("https://api.openweathermap.org/data/2.5/weather?lat=48.783333&lon=9.183333&appid=0e6e446d1e4dba85c052351ca6b2bf40&units=metric")
             response.raise_for_status()
             weather_api = response.json()
             self.outside_temp = weather_api['main']['temp']
+            if "rain" in weather_api['weather'][0]['description'] or "thunderstorm" in weather_api['weather'][0]['description']:
+                self.is_raining = True
+            else: 
+                self.is_raining = False
         except: 
             self.outside_temp = self.outside_temp
+            self.is_raining = self.is_raining
 
         # process readings with pddl
         self.planner.update_problem(
             set_light=readings["light"], set_humidity=readings["humidity"], set_inside_temp=readings["temperature"], set_water_level=readings["water"], set_outside_temp=self.outside_temp,
-            set_is_raining=False,
+            set_is_raining=self.is_raining,
             set_force_light=False, set_force_window=False, set_force_cooler=False, set_force_water=False,
             light_on_state=self.internal_state["light_on"], windows_open_state=self.internal_state["windows_open"], air_cooler_on_state=self.internal_state["air_cooler_on"], water_spender_on_state=self.internal_state["water_spender_on"])
         
         action = self.planner.solve()[0]
+
+        print(str(action))
 
         self.update_internal_state(action)
 

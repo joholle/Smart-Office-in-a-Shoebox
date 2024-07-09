@@ -23,6 +23,8 @@ cooler_action_done = Predicate("cooler_action_done")
 
 no_action_possible = Predicate("no_action_possible")
 
+z_end_predicate = Predicate("z_end_predicate")
+
 # define functions
 light = NumericFunction("light")
 humidity = NumericFunction("humidity")

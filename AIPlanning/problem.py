@@ -34,6 +34,8 @@ class Problem:
         init.add(air_cooler_on) if air_cooler_on_state else init.add(Not(air_cooler_on))
         init.add(water_spender_on) if water_spender_on_state else init.add(Not(water_spender_on))
 
+        init.add(z_end_predicate)
+
 
         problem = pddl_core.Problem(
             "pleasant_office_room",

@@ -13,7 +13,7 @@ from AIPlanning.logic import *
 turn_on_light = Action(
     "turn_on_light",
     parameters=[],
-    precondition=LesserThan(light, NumericValue(10)) & Not(light_on),
+    precondition=LesserThan(light, NumericValue(200)) & Not(light_on),
     effect=light_on&light_action_done
 )
 force_on_light = Action(
@@ -29,30 +29,30 @@ force_off_light = Action(
     effect=Not(light_on)&light_action_done
 )
 # window actions
-open_window = Action(
-    "open_window",
-    parameters=[],
-    precondition=(GreaterThan(humidity, NumericValue(10)) | GreaterThan(inside_temp, NumericValue(10))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open),
-    effect=windows_open&window_action_done
-)
-close_window = Action(
-    "close_window",
-    parameters=[],
-    precondition=(LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(is_raining&windows_open),
-    effect=Not(windows_open)&window_action_done
-)
-force_open_window = Action(
-    "force_open_window",
-    parameters=[],
-    precondition=Not(windows_open) & force_window,
-    effect=windows_open&window_action_done
-)
-force_close_window = Action(
-    "force_close_window",
-    parameters=[],
-    precondition=windows_open & force_window,
-    effect=Not(windows_open)&window_action_done
-)
+# open_window = Action(
+#     "open_window",
+#     parameters=[],
+#     precondition=(GreaterThan(humidity, NumericValue(10)) | GreaterThan(inside_temp, NumericValue(10))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open),
+#     effect=windows_open&window_action_done
+# )
+# close_window = Action(
+#     "close_window",
+#     parameters=[],
+#     precondition=(LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(is_raining&windows_open),
+#     effect=Not(windows_open)&window_action_done
+# )
+# force_open_window = Action(
+#     "force_open_window",
+#     parameters=[],
+#     precondition=Not(windows_open) & force_window,
+#     effect=windows_open&window_action_done
+# )
+# force_close_window = Action(
+#     "force_close_window",
+#     parameters=[],
+#     precondition=windows_open & force_window,
+#     effect=Not(windows_open)&window_action_done
+# )
 # cooler actions
 turn_on_cooler = Action(
     "turn_on_cooler",
@@ -103,7 +103,7 @@ no_action = Action(
     parameters=[],
     precondition=Not(
         # no light action possible
-        (LesserThan(light, NumericValue(10)) & Not(light_on())) |
+        (LesserThan(light, NumericValue(200)) & Not(light_on())) |
         (Not(light_on) & force_light) |
         ((light_on & force_light)) |
 
