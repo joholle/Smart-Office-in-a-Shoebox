@@ -1,44 +1,52 @@
 import os
-import time
 from pddl.formatter import domain_to_string, problem_to_string
 
-from domain import Domain
-from problem import Problem
+from AIPlanning.domain import Domain
+from AIPlanning.problem import Problem
 
-domain = Domain().create()
+class Planner:
+    def __init__(self):
+        self.domain = Domain().create()
+        domain_file = open("resources/domain.pddl", "w")
+        domain_file.write(domain_to_string(self.domain))
+        domain_file.close()
 
-domain_file = open("resources/domain.pddl", "w")
-domain_file.write(domain_to_string(domain))
-domain_file.close()
-
-while True:
-    problem = Problem().create( domain=domain,
-                                set_light=5, set_humidity=15, set_inside_temp=15, set_water_level=5, set_outside_temp=5,
-                                set_is_raining=False,
-                                set_force_light=False, set_force_window=False, set_force_cooler=False, set_force_water=False,
+    def update_problem(self, 
+                       set_light, set_humidity, set_inside_temp, set_water_level, set_outside_temp,
+                       set_is_raining,
+                       set_force_light, set_force_window, set_force_cooler, set_force_water,
+                       light_on_state, windows_open_state, air_cooler_on_state, water_spender_on_state
+                       ):
+        problem = Problem().create( domain=self.domain,
+                                set_light=set_light, set_humidity=set_humidity, set_inside_temp=set_inside_temp, set_water_level=set_water_level, set_outside_temp=set_outside_temp,
+                                set_is_raining=set_is_raining,
+                                set_force_light=set_force_light, set_force_window=set_force_window, set_force_cooler=set_force_cooler, set_force_water=set_force_water,
                                 # state: 
-                                light_on_state=True, windows_open_state=True, air_cooler_on_state=True, water_spender_on_state=True
+                                light_on_state=light_on_state, windows_open_state=windows_open_state, air_cooler_on_state=air_cooler_on_state, water_spender_on_state=water_spender_on_state
                                 )
 
-    problem_file = open("resources/problem.pddl", "w")
-    problem_file.write(problem_to_string(problem))
-    problem_file.close()
+        problem_file = open("resources/problem.pddl", "w")
+        problem_file.write(problem_to_string(problem))
+        problem_file.close()
 
-    os.system(".\\metric-ff-crossplatform-main\\ff-v2.1.exe -o resources/domain.pddl -f resources/problem.pddl -s 0 > resources/plan.txt")
+    def solve(self):
+        os.system(".\\AIPlanning\\metric-ff-crossplatform-main\\ff-v2.1.exe -o resources/domain.pddl -f resources/problem.pddl -s 0 > resources/plan.txt")
 
-    with open("resources/plan.txt", 'r') as file:
-        step_found = False
-        for line in file:
-            if step_found:
-                if "time spent" in line:
-                    break
-                if "REACH-GOAL" in line:
-                    break
-                print(line.strip())  
-            elif "step" in line:
-                print(line.strip())  
-                step_found = True
+        actions = []
 
-    # TODO: status aktualisieren nach neuem Plan
-
-    time.sleep(3)
+        with open("resources/plan.txt", 'r') as file:
+            step_found = False
+            for line in file:
+                if step_found:
+                    if "time spent" in line:
+                        break
+                    if "REACH-GOAL" in line:
+                        break
+                    if ":" not in line:
+                        break
+                    actions.append(line.strip()[line.strip().find(":")+2:])
+                elif "step" in line:
+                    actions.append(line.strip()[line.strip().find(":")+2:])
+                    step_found = True
+        
+        return actions

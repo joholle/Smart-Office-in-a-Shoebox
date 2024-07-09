@@ -7,7 +7,7 @@ from pddl.logic.functions import (
 from pddl.logic.base import Not
 from pddl.action import Action
 
-from logic import *
+from AIPlanning.logic import *
 
 # light actions
 turn_on_light = Action(

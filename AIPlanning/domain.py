@@ -1,8 +1,8 @@
 import pddl.core as pddl_core
 
-from logic import *
-from actions import *
-from requirements import * 
+from AIPlanning.logic import *
+from AIPlanning.actions import *
+from AIPlanning.requirements import * 
 
 class Domain:
     def create(self) -> pddl_core.Domain:        
