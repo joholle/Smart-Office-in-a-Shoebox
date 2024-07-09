@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Four spaces as indentation [no tabs]
 
 # This file is part of PDDL Parser, available at <https://github.com/pucrs-automated-planning/pddl-parser>.
@@ -40,12 +39,12 @@ class Action:
     # -----------------------------------------------
 
     def __str__(self):
-        return 'action: ' + self.name + \
-               '\n  parameters: ' + str(list(self.parameters)) + \
-               '\n  positive_preconditions: ' + str([list(i) for i in self.positive_preconditions]) + \
-               '\n  negative_preconditions: ' + str([list(i) for i in self.negative_preconditions]) + \
-               '\n  add_effects: ' + str([list(i) for i in self.add_effects]) + \
-               '\n  del_effects: ' + str([list(i) for i in self.del_effects]) + '\n'
+        return '{ "action_name": ' + self.name + \
+               ',\n "parameters": ' + str(list(self.parameters)) + \
+               ',\n "positive_preconditions": ' + str([list(i) for i in self.positive_preconditions]) + \
+               ',\n "negative_preconditions": ' + str([list(i) for i in self.negative_preconditions]) + \
+               ',\n "add_effects": ' + str([list(i) for i in self.add_effects]) + \
+               ',\n "del_effects": ' + str([list(i) for i in self.del_effects]) + ' }\n'
 
     # -----------------------------------------------
     # Equality
