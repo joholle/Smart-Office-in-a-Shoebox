@@ -17,3 +17,12 @@
 1720525586: Opening ipv6 listen socket on port 1883.
 1720525586: Error: Address already in use
 1720525586: mosquitto version 2.0.11 running
+1720538408: mosquitto version 2.0.11 starting
+1720538408: Using default config.
+1720538408: Starting in local only mode. Connections will only be possible from clients running on this machine.
+1720538408: Create a configuration file which defines a listener to allow remote access.
+1720538408: For more details see https://mosquitto.org/documentation/authentication-methods/
+1720538408: Opening ipv4 listen socket on port 1883.
+1720538408: Opening ipv6 listen socket on port 1883.
+1720538408: Error: Address already in use
+1720538408: mosquitto version 2.0.11 running

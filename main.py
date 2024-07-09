@@ -20,7 +20,7 @@ class Pi:
 
     def wait_for_callback(self):
         timer = time.time()
-        while timer + 5 > time.time():
+        while timer + 2 > time.time():
             if self.mqtt.on_message:
                 recieved_message = self.mqtt.message
                 if recieved_message != "" and recieved_message not in self.old_messages:
