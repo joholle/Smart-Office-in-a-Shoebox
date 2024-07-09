@@ -9,7 +9,7 @@ class Problem:
                set_light:float, set_humidity:float, set_inside_temp:float, set_water_level:float, set_outside_temp:float,
                set_is_raining:bool, 
                set_force_light:bool, set_force_window:bool, set_force_cooler:bool, set_force_water:bool, 
-               light_on_status:bool, windows_open_status:bool, air_cooler_on_status:bool, water_spender_on_status:bool
+               light_on_state:bool, windows_open_state:bool, air_cooler_on_state:bool, water_spender_on_state:bool
                ) -> pddl_core.Problem:
         
         # sensor values and weather api
@@ -28,11 +28,11 @@ class Problem:
         init.add(force_cooler) if set_force_cooler else init.add(Not(force_cooler))
         init.add(force_water) if set_force_water else init.add(Not(force_water))
 
-        # current status
-        init.add(light_on) if light_on_status else init.add(Not(light_on))
-        init.add(windows_open) if windows_open_status else init.add(Not(windows_open))
-        init.add(air_cooler_on) if air_cooler_on_status else init.add(Not(air_cooler_on))
-        init.add(water_spender_on) if water_spender_on_status else init.add(Not(water_spender_on))
+        # current state
+        init.add(light_on) if light_on_state else init.add(Not(light_on))
+        init.add(windows_open) if windows_open_state else init.add(Not(windows_open))
+        init.add(air_cooler_on) if air_cooler_on_state else init.add(Not(air_cooler_on))
+        init.add(water_spender_on) if water_spender_on_state else init.add(Not(water_spender_on))
 
 
         problem = pddl_core.Problem(
