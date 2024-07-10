@@ -38,7 +38,7 @@ open_window = Action(
 close_window = Action(
     "close_window",
     parameters=[],
-    precondition=(LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(GreaterThan(water_level, NumericValue(0))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open) & EqualTo(force_window, NumericValue(1)),
+    precondition=((LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(GreaterThan(water_level, NumericValue(0))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open)) & EqualTo(force_window, NumericValue(1)),
     effect=Not(windows_open)&window_action_done
 )
 force_open_window = Action(
@@ -110,8 +110,8 @@ no_action = Action(
         (light_on & EqualTo(force_light, NumericValue(0))) |
 
         # no window action possible
-        ((GreaterThan(humidity, NumericValue(10)) | GreaterThan(inside_temp, NumericValue(10))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open)  & EqualTo(force_window, NumericValue(1))) |
-        ((LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(GreaterThan(water_level, NumericValue(0))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open) & EqualTo(force_window, NumericValue(1))) |
+        ((GreaterThan(humidity, NumericValue(10)) | GreaterThan(inside_temp, NumericValue(10))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open)) & EqualTo(force_window, NumericValue(1))) |
+        (((LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(GreaterThan(water_level, NumericValue(0))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open) & EqualTo(force_window, NumericValue(1))) |
         (Not(windows_open) & EqualTo(force_window, NumericValue(2))) |
         (windows_open & EqualTo(force_window, NumericValue(0))) |
 

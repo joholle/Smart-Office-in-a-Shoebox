@@ -219,10 +219,21 @@ class Interface:
         self.watercooling_status.set(state)
 
     def get_manual_input(self):
-        is_window_open = self.window_status.get() == "Force Open"
-        is_lights_on = self.lights_status.get() == "Force On"
-        is_cooling_on = self.watercooling_status.get() == "Force On"
+        is_window_open = self.get_int_from_state(self.window_status.get())
+        is_lights_on = self.get_int_from_state(self.lights_status.get())
+        is_cooling_on = self.get_int_from_state(self.watercooling_status.get())
         return is_window_open, is_lights_on, is_cooling_on
+
+    def get_int_from_state(self, state):
+        if state in ["Force Close", "Force Off"]:
+            return 0
+        elif state in ["Default"]:
+            return 1
+        elif state in ["Force Open", "Force On"]:
+            return 2
+        else:
+            print("invalid state")
+            return -1
 
     def get_temperature(self):
         return self.temperature
@@ -230,8 +241,8 @@ class Interface:
     def get_humidity(self):
         return self.humidity
 
-    def get_light(self):
-        return self.light
+    def get_lights_status(self):
+        return self.lights_status
 
     def get_water_level(self):
         return self.water

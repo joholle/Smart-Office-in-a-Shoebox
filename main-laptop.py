@@ -15,9 +15,9 @@ class Laptop:
         self.is_raining = False
 
         self.planner = Planner()
-        self.internal_state = { "light_on" : False,
-                                "windows_open" : False,
-                                "air_cooler_on" : False,
+        self.internal_state = { "light_on" : 1,
+                                "windows_open" : 1,
+                                "air_cooler_on" : 1,
                                 # "water_spender_on" : False
                                 }
 
@@ -31,7 +31,7 @@ class Laptop:
             response = requests.get("https://api.openweathermap.org/data/2.5/weather?lat=48.783333&lon=9.183333&appid=0e6e446d1e4dba85c052351ca6b2bf40&units=metric")
             response.raise_for_status()
             weather_api = response.json()
-            self.outside_temp = weather_api['main']['temp']
+            self.outside_temp = round(weather_api['main']['temp'])
             if "rain" in weather_api['weather'][0]['description'] or "thunderstorm" in weather_api['weather'][0]['description']:
                 self.is_raining = True
             else: 
@@ -51,7 +51,8 @@ class Laptop:
         })
         # get user interput from interface
         set_force_window, set_force_light, set_force_cooler = self.interface.get_manual_input()
-        self.interface.turn_off_all()
+
+        print(set_force_window, set_force_light, set_force_cooler)
 
         # process readings with pddl
         self.planner.update_problem(

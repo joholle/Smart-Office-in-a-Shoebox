@@ -22,11 +22,11 @@ class ArduinoSerial:
         if msg.startswith("servo "):
             degree = int(msg.split(" ")[1])
             if degree <= 180 and degree >= 0:
-                message_to_arduino = b"servo %d   \n" % degree
+                message_to_arduino = ("servo %d   \n" % degree).encode()
             else:
                 return print("Invalid degree for servo")
         elif msg in ["fan on", "fan off", "cooler on", "cooler off"]:
-            message_to_arduino = b"%s\n" % msg
+            message_to_arduino = ("%s\n" % msg).encode()
         else:
             return print("invalid arduinoSerial.write argument: " + msg)
         
