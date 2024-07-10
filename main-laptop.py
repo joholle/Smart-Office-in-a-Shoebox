@@ -1,39 +1,13 @@
 from mqtt.mqtt import MQTT
 from interfaceSC import Interface
 import json, time
-
-
-# mqtt = MQTT("Laptop", "masterpi", "laptop_channel", "pi_channel")
-# id = 0
-# cycle = False
-# while True:
-#     if cycle:
-#         mqtt.publish(str(id) + " open window")
-#     else:
-#         mqtt.publish(str(id) + " close window")
-#     id += 1
-#     cycle = not cycle
-#     time.sleep(4)
-# time.sleep(5)
-
-# pddl = PDDL("AIPlanning/Domain.pddl", "AIPlanning/Problem.pddl")
-# pddl.set_state(frozenset({('off', 'light1'), ('on', 'light2'), ('value-low', 'light_sensor'), ('value-low', 'light_sensor2')}))
-
-# plan = pddl.plan()
-# if plan != None:
-#     for action in plan:
-#         print(str(action))
-        # mqtt.publish(json.loads(str(action)))
-
-# print("DONE")
-
-
 from AIPlanning.planner import Planner
 import requests
 
 class Laptop:
     def __init__(self):
         self.mqtt = MQTT("Laptop", "masterpi", "laptop_channel", "pi_channel")
+        _pause_before_publish = time.sleep(1)
         self.mqtt.publish("set initial state")
         self.id = 0
         self.old_messages = []
@@ -77,6 +51,7 @@ class Laptop:
         })
         # get user interput from interface
         set_force_window, set_force_light, set_force_cooler = self.interface.get_manual_input()
+        self.interface.turn_off_all()
 
         # process readings with pddl
         self.planner.update_problem(
@@ -93,8 +68,6 @@ class Laptop:
         print(str(action))
 
         self.update_state(action)
-
-        # print action to mqtt with id
 
         self.interface.update_status(self.update, readings)
 
@@ -135,10 +108,3 @@ class Laptop:
 
 if __name__ == "__main__":
     laptop = Laptop()
-
-# Run interface
-# every 5 seconds:
-#   get sensor readings from arduino
-#   create pddl plan by recieving info from mqtt
-#   execute plan, by sending back to mqtt arduino
-#   update interface

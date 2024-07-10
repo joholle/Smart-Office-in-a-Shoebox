@@ -5,15 +5,22 @@ import time
 from datetime import datetime
 
 class MQTT:
-    # Pi:
-    # alias = "Pi"
-    # server = "localhost"
-    # path_publish = "pi_channel"
-    # path_subscribe = "laptop_channel"
+    """
+    Pi:
+        alias = "Pi"
+        server = "localhost"
+        path_publish = "pi_channel"
+        path_subscribe = "laptop_channel"
+    Laptop:
+        alias = "Laptop"
+        server = "masterpi"
+        path_publish = "laptop_channel"
+        path_subscribe = "pi_channel"
+    """
     def __init__(self, alias, server, path_publish, path_subscribe):
         #MQTT Broker address
         self.alias = alias
-        self.MQTT_SERVER = server  # Replace with the actual IP address of the Raspberry Pi
+        self.MQTT_SERVER = server
         self.MQTT_PATH_PUBLISH = path_publish
         self.MQTT_PATH_SUBSCRIBE = path_subscribe
 
@@ -44,28 +51,30 @@ class MQTT:
         # print(f"Published from {self.alias}: {jmsg}")
 
 if __name__ == '__main__':
-    # To test the script, run the the bellow code once and another time commented out
-    mqtt = MQTT("Pi", "localhost", "pi_channel", "laptop_channel")
-    while True:
-        dt = datetime.now().strftime("%d-%m-%YT%H:%M:%S")
-        message = {
-            "temperature": "23.0",
-            "timestamp": dt,
-            "light": "on"
-        }
-        mqtt.publish(message)
-        time.sleep(5)
+    pi = True # Set to false for Laptop
 
-    mqtt = MQTT("Laptop", "masterpi", "laptop_channel", "pi_channel")
-    while True:
-        dt = datetime.now().strftime("%d-%m-%YT%H:%M:%S")
-        message = {
-            "type-id": "de.uni-stuttgart.iaas.sc.laptop",
-            "instance-id": "laptop instance",
-            "timestamp": dt,
-            "value": {
-                "temperature": "23.0"
+    if pi:
+        mqtt = MQTT("Pi", "localhost", "pi_channel", "laptop_channel")
+        while True:
+            dt = datetime.now().strftime("%d-%m-%YT%H:%M:%S")
+            message = {
+                "temperature": "23.0",
+                "timestamp": dt,
+                "light": "on"
             }
-        }
-        mqtt.publish(message)
-        time.sleep(5)
+            mqtt.publish(message)
+            time.sleep(5)
+    else:
+        mqtt = MQTT("Laptop", "masterpi", "laptop_channel", "pi_channel")
+        while True:
+            dt = datetime.now().strftime("%d-%m-%YT%H:%M:%S")
+            message = {
+                "type-id": "de.uni-stuttgart.iaas.sc.laptop",
+                "instance-id": "laptop instance",
+                "timestamp": dt,
+                "value": {
+                    "temperature": "23.0"
+                }
+            }
+            mqtt.publish(message)
+            time.sleep(5)

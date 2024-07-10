@@ -13,69 +13,69 @@ from AIPlanning.logic import *
 turn_on_light = Action(
     "turn_on_light",
     parameters=[],
-    precondition=LesserThan(light, NumericValue(200)) & Not(light_on),
+    precondition=LesserThan(light, NumericValue(200)) & Not(light_on) & EqualTo(force_light, NumericValue(1)),
     effect=light_on&light_action_done
 )
 force_on_light = Action(
     "force_on_light",
     parameters=[],
-    precondition=Not(light_on) & force_light,
+    precondition=Not(light_on) & EqualTo(force_light, NumericValue(2)),
     effect=light_on&light_action_done
 )
 force_off_light = Action(
     "force_off_light",
     parameters=[],
-    precondition=(light_on & force_light),
+    precondition=light_on & EqualTo(force_light, NumericValue(0)),
     effect=Not(light_on)&light_action_done
 )
 # window actions
 open_window = Action(
     "open_window",
     parameters=[],
-    precondition=(GreaterThan(humidity, NumericValue(10)) | GreaterThan(inside_temp, NumericValue(10))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open),
+    precondition=(GreaterThan(humidity, NumericValue(10)) | GreaterThan(inside_temp, NumericValue(10))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open)  & EqualTo(force_window, NumericValue(1)),
     effect=windows_open&window_action_done
 )
 close_window = Action(
     "close_window",
     parameters=[],
-    precondition=(LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(GreaterThan(water_level, NumericValue(0))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open),
+    precondition=(LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(GreaterThan(water_level, NumericValue(0))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open) & EqualTo(force_window, NumericValue(1)),
     effect=Not(windows_open)&window_action_done
 )
 force_open_window = Action(
     "force_open_window",
     parameters=[],
-    precondition=Not(windows_open) & force_window,
+    precondition=Not(windows_open) & EqualTo(force_window, NumericValue(2)),
     effect=windows_open&window_action_done
 )
 force_close_window = Action(
     "force_close_window",
     parameters=[],
-    precondition=windows_open & force_window,
+    precondition=windows_open & EqualTo(force_window, NumericValue(0)),
     effect=Not(windows_open)&window_action_done
 )
 # cooler actions
 turn_on_cooler = Action(
     "turn_on_cooler",
     parameters=[],
-    precondition=GreaterThan(inside_temp, NumericValue(10))&LesserThan(inside_temp, outside_temp)&Not(air_cooler_on),
+    precondition=GreaterThan(inside_temp, NumericValue(10))&LesserThan(inside_temp, outside_temp)&Not(air_cooler_on) & EqualTo(force_cooler, NumericValue(1)),
     effect=air_cooler_on&cooler_action_done
 )
 turn_off_cooler = Action(
     "turn_off_cooler",
     parameters=[],
-    precondition=(LesserThan(inside_temp, NumericValue(10))|GreaterThan(inside_temp, outside_temp))&air_cooler_on,
+    precondition=(LesserThan(inside_temp, NumericValue(10))|GreaterThan(inside_temp, outside_temp))&air_cooler_on & EqualTo(force_cooler, NumericValue(1)),
     effect=Not(air_cooler_on)&cooler_action_done
 )
 force_turn_on_cooler = Action(
     "force_turn_on_cooler",
     parameters=[],
-    precondition=Not(air_cooler_on)&force_cooler,
+    precondition=Not(air_cooler_on) & EqualTo(force_cooler, NumericValue(2)),
     effect=air_cooler_on&cooler_action_done
 )
 force_turn_off_cooler = Action(
     "force_turn_off_cooler",
     parameters=[],
-    precondition=air_cooler_on&force_cooler,
+    precondition=air_cooler_on & EqualTo(force_cooler, NumericValue(0)),
     effect=Not(air_cooler_on)&cooler_action_done
 )
 # water actions
@@ -105,21 +105,21 @@ no_action = Action(
     parameters=[],
     precondition=Not(
         # no light action possible
-        (LesserThan(light, NumericValue(200)) & Not(light_on())) |
-        (Not(light_on) & force_light) |
-        ((light_on & force_light)) |
+        (LesserThan(light, NumericValue(200)) & Not(light_on) & EqualTo(force_light, NumericValue(1))) |
+        (Not(light_on) & EqualTo(force_light, NumericValue(2))) |
+        (light_on & EqualTo(force_light, NumericValue(0))) |
 
         # no window action possible
-        ((GreaterThan(humidity, NumericValue(10)) | GreaterThan(inside_temp, NumericValue(10))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open)) |
-        ((LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(GreaterThan(water_level, NumericValue(0))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open)) |
-        (Not(windows_open) & force_window) |
-        (windows_open & force_window) |
+        ((GreaterThan(humidity, NumericValue(10)) | GreaterThan(inside_temp, NumericValue(10))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open)  & EqualTo(force_window, NumericValue(1))) |
+        ((LesserThan(humidity, NumericValue(10))&LesserThan(inside_temp, NumericValue(10))&windows_open)|(GreaterThan(water_level, NumericValue(0))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open) & EqualTo(force_window, NumericValue(1))) |
+        (Not(windows_open) & EqualTo(force_window, NumericValue(2))) |
+        (windows_open & EqualTo(force_window, NumericValue(0))) |
 
         # no cooler action possible
-        (GreaterThan(inside_temp, NumericValue(10))&LesserThan(inside_temp, outside_temp)&Not(air_cooler_on)) |
-        ((LesserThan(inside_temp, NumericValue(10))|GreaterThan(inside_temp, outside_temp))&air_cooler_on) |
-        (Not(air_cooler_on)&force_cooler) |
-        (air_cooler_on&force_cooler) #|
+        (GreaterThan(inside_temp, NumericValue(10))&LesserThan(inside_temp, outside_temp)&Not(air_cooler_on) & EqualTo(force_cooler, NumericValue(1))) |
+        ((LesserThan(inside_temp, NumericValue(10))|GreaterThan(inside_temp, outside_temp))&air_cooler_on & EqualTo(force_cooler, NumericValue(1))) |
+        (Not(air_cooler_on) & EqualTo(force_cooler, NumericValue(2))) |
+        (air_cooler_on & EqualTo(force_cooler, NumericValue(0))) #|
 
         # no water action possible
        # (EqualTo(water_level, NumericValue(0))&Not(water_spender_on)) |

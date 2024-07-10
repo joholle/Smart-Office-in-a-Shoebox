@@ -9,24 +9,31 @@ class Problem:
                set_light:float, set_humidity:float, set_inside_temp:float, set_water_level:float, 
                set_outside_temp:float, 
                set_is_raining:bool, 
-               set_force_light:bool, set_force_window:bool, set_force_cooler:bool, # set_force_water:bool, 
+               set_force_light:int, set_force_window:int, set_force_cooler:int, # set_force_water:int, 
                light_on_state:bool, windows_open_state:bool, air_cooler_on_state:bool, # water_spender_on_state:bool
                ) -> pddl_core.Problem:
         
         # sensor values and weather api
         init = {
+                # sensor data
                 EqualTo(light, NumericValue(set_light)), 
                 EqualTo(humidity, NumericValue(set_humidity)),
                 EqualTo(inside_temp, NumericValue(set_inside_temp)),
                 EqualTo(water_level, NumericValue(set_water_level)),
-                EqualTo(outside_temp, NumericValue(set_outside_temp))
+                EqualTo(outside_temp, NumericValue(set_outside_temp)),
+
+                # user inputs
+                EqualTo(force_light, NumericValue(set_force_light)), 
+                EqualTo(force_window, NumericValue(set_force_window)),
+                EqualTo(force_cooler, NumericValue(set_force_cooler))
+                # EqualTo(force_water, NumericValue(set_force_water))
             }
         init.add(is_raining) if set_is_raining else init.add(Not(is_raining))
 
         # user inputs
-        init.add(force_light) if set_force_light else init.add(Not(force_light))
-        init.add(force_window) if set_force_window else init.add(Not(force_window))
-        init.add(force_cooler) if set_force_cooler else init.add(Not(force_cooler))
+        # init.add(force_light) if set_force_light else init.add(Not(force_light))
+        # init.add(force_window) if set_force_window else init.add(Not(force_window))
+        # init.add(force_cooler) if set_force_cooler else init.add(Not(force_cooler))
         # init.add(force_water) if set_force_water else init.add(Not(force_water))
 
         # current state
@@ -43,7 +50,7 @@ class Problem:
             domain=domain,
             requirements=requirements,
             init=init,
-            goal=light_action_done|window_action_done|water_action_done|cooler_action_done|no_action_possible
+            goal=light_action_done|window_action_done|cooler_action_done|no_action_possible
         )
       
         return problem

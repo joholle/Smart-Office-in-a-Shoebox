@@ -31,5 +31,11 @@ humidity = NumericFunction("humidity")
 inside_temp = NumericFunction("inside_temp")
 water_level = NumericFunction("water_level")
 
+
+force_light = NumericFunction("force_light")
+force_window = NumericFunction("force_window")
+force_cooler = NumericFunction("force_cooler")
+# force_water = NumericFunction("force_water")
+
 outside_temp = NumericFunction("outside_temp")
 

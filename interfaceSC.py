@@ -54,24 +54,66 @@ class Interface:
         # Add actuator controls
         self.window_frame = ttk.LabelFrame(self.actuator_frame, text="Windows", padding=(5, 5))
         self.window_frame.grid(column=0, row=0, padx=5, pady=5, sticky='NSEW')
-        self.window_open_button = tk.Button(self.window_frame, text="Open", command=lambda: self.set_window_status("Open"))
-        self.window_open_button.pack(side="left", padx=5, pady=5)
-        self.window_closed_button = tk.Button(self.window_frame, text="Closed", command=lambda: self.set_window_status("Closed"))
-        self.window_closed_button.pack(side="left", padx=5, pady=5)
+
+        # Add labels above the slider using grid
+        self.window_close_label = tk.Label(self.window_frame, text="Close", font=("Helvetica", 8))
+        self.window_close_label.grid(column=0, row=0, padx=5)
+
+        self.window_default_label = tk.Label(self.window_frame, text="Default", font=("Helvetica", 8))
+        self.window_default_label.grid(column=1, row=0, padx=5)
+
+        self.window_open_label = tk.Label(self.window_frame, text="Open", font=("Helvetica", 8))
+        self.window_open_label.grid(column=2, row=0, padx=5)
+
+        # Add the slider for window control using grid
+        self.window_slider = tk.Scale(self.window_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_window_status)
+        self.window_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
+        self.window_slider.set(1)  # Set to default
+
+        self.window_status_label = ttk.Label(self.window_frame, textvariable=self.window_status, font=("Helvetica", 12))
+        self.window_status_label.grid(column=0, row=2, columnspan=3, padx=5, pady=5)
 
         self.lights_frame = ttk.LabelFrame(self.actuator_frame, text="Lights", padding=(5, 5))
         self.lights_frame.grid(column=0, row=1, padx=5, pady=5, sticky='NSEW')
-        self.lights_on_button = tk.Button(self.lights_frame, text="On", command=lambda: self.set_lights_status("On"))
-        self.lights_on_button.pack(side="left", padx=5, pady=5)
-        self.lights_off_button = tk.Button(self.lights_frame, text="Off", command=lambda: self.set_lights_status("Off"))
-        self.lights_off_button.pack(side="left", padx=5, pady=5)
+
+        # Add labels above the slider using grid for lights
+        self.lights_off_label = tk.Label(self.lights_frame, text="Off", font=("Helvetica", 8))
+        self.lights_off_label.grid(column=0, row=0, padx=5)
+
+        self.lights_default_label = tk.Label(self.lights_frame, text="Default", font=("Helvetica", 8))
+        self.lights_default_label.grid(column=1, row=0, padx=5)
+
+        self.lights_on_label = tk.Label(self.lights_frame, text="On", font=("Helvetica", 8))
+        self.lights_on_label.grid(column=2, row=0, padx=5)
+
+        # Add the slider for lights control using grid
+        self.lights_slider = tk.Scale(self.lights_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_lights_status)
+        self.lights_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
+        self.lights_slider.set(1)  # Set to default
+
+        self.lights_status_label = ttk.Label(self.lights_frame, textvariable=self.lights_status, font=("Helvetica", 12))
+        self.lights_status_label.grid(column=0, row=2, columnspan=3, padx=5, pady=5)
 
         self.watercooling_frame = ttk.LabelFrame(self.actuator_frame, text="Air Conditioning", padding=(5, 5))
         self.watercooling_frame.grid(column=0, row=2, padx=5, pady=5, sticky='NSEW')
-        self.watercooling_on_button = tk.Button(self.watercooling_frame, text="On", command=lambda: self.set_watercooling_status("On"))
-        self.watercooling_on_button.pack(side="left", padx=5, pady=5)
-        self.watercooling_off_button = tk.Button(self.watercooling_frame, text="Off", command=lambda: self.set_watercooling_status("Off"))
-        self.watercooling_off_button.pack(side="left", padx=5, pady=5)
+
+        # Add labels above the slider using grid for air conditioning
+        self.cooling_off_label = tk.Label(self.watercooling_frame, text="Off", font=("Helvetica", 8))
+        self.cooling_off_label.grid(column=0, row=0, padx=5)
+
+        self.cooling_default_label = tk.Label(self.watercooling_frame, text="Default", font=("Helvetica", 8))
+        self.cooling_default_label.grid(column=1, row=0, padx=5)
+
+        self.cooling_on_label = tk.Label(self.watercooling_frame, text="On", font=("Helvetica", 8))
+        self.cooling_on_label.grid(column=2, row=0, padx=5)
+
+        # Add the slider for air conditioning control using grid
+        self.cooling_slider = tk.Scale(self.watercooling_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_watercooling_status)
+        self.cooling_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
+        self.cooling_slider.set(1)  # Set to default
+
+        self.watercooling_status_label = ttk.Label(self.watercooling_frame, textvariable=self.watercooling_status, font=("Helvetica", 12))
+        self.watercooling_status_label.grid(column=0, row=2, columnspan=3, padx=5, pady=5)
 
         # Add weather labels
         self.weather_temperature_frame = ttk.LabelFrame(self.weather_frame, text="Temperature", padding=(5, 5))
@@ -112,9 +154,9 @@ class Interface:
         style.configure("TButton", background="#9370DB", foreground="#FFFFFF", font=("Helvetica", 10, "bold"))
 
         # Initialize actuator status
-        self.set_window_status("Closed")
-        self.set_lights_status("Off")
-        self.set_watercooling_status("Off")
+        self.set_window_status("Default")
+        self.set_lights_status("Default")
+        self.set_watercooling_status("Default")
 
     def start_loop(self, function):
         # Call the update_status function to initialize the status updates
@@ -132,46 +174,54 @@ class Interface:
             self.light.set(str(sensor_data["light"]))
             self.weather_temperature.set(str(sensor_data["weather_temperature"]) + "°C")
             self.weather_conditions.set(sensor_data["weather_conditions"])
-            
 
         # Update the status every second
         self.root.after(1000, function)
 
+    # Function to update window status based on slider position
+    def update_window_status(self, value):
+        value = int(value)
+        if value == 0:
+            self.set_window_status("Force Close")
+        elif value == 1:
+            self.set_window_status("Default")
+        elif value == 2:
+            self.set_window_status("Force Open")
+
+    # Function to update lights status based on slider position
+    def update_lights_status(self, value):
+        value = int(value)
+        if value == 0:
+            self.set_lights_status("Force Off")
+        elif value == 1:
+            self.set_lights_status("Default")
+        elif value == 2:
+            self.set_lights_status("Force On")
+
+    # Function to update air conditioning status based on slider position
+    def update_watercooling_status(self, value):
+        value = int(value)
+        if value == 0:
+            self.set_watercooling_status("Force Off")
+        elif value == 1:
+            self.set_watercooling_status("Default")
+        elif value == 2:
+            self.set_watercooling_status("Force On")
+
     # Callback functions to handle actuator status change
     def set_window_status(self, state):
-        if state == "Open":
-            self.window_status.set("Open")
-            self.window_open_button.config(bg="green", activebackground="green")
-            self.window_closed_button.config(bg="grey", activebackground="grey")
-        else:
-            self.window_status.set("Closed")
-            self.window_open_button.config(bg="grey", activebackground="grey")
-            self.window_closed_button.config(bg="red", activebackground="red")
+        self.window_status.set(state)
 
     def set_lights_status(self, state):
-        if state == "On":
-            self.lights_status.set("On")
-            self.lights_on_button.config(bg="green", activebackground="green")
-            self.lights_off_button.config(bg="grey", activebackground="grey")
-        else:
-            self.lights_status.set("Off")
-            self.lights_on_button.config(bg="grey", activebackground="grey")
-            self.lights_off_button.config(bg="red", activebackground="red")
+        self.lights_status.set(state)
 
     def set_watercooling_status(self, state):
-        if state == "On":
-            self.watercooling_status.set("On")
-            self.watercooling_on_button.config(bg="green", activebackground="green")
-            self.watercooling_off_button.config(bg="grey", activebackground="grey")
-        else:
-            self.watercooling_status.set("Off")
-            self.watercooling_on_button.config(bg="grey", activebackground="grey")
-            self.watercooling_off_button.config(bg="red", activebackground="red")
+        self.watercooling_status.set(state)
 
     def get_manual_input(self):
-        is_window_open = self.window_status.get() == "Open"
-        is_lights_on = self.lights_status.get() == "On"
-        is_cooling_on = self.watercooling_status.get() == "On"
+        is_window_open = self.window_status.get() == "Force Open"
+        is_lights_on = self.lights_status.get() == "Force On"
+        is_cooling_on = self.watercooling_status.get() == "Force On"
         return is_window_open, is_lights_on, is_cooling_on
 
     def get_temperature(self):

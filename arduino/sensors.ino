@@ -74,6 +74,7 @@ void loop() {
     input = "";
     string_complete = false;
   }
+  // Test servo functionality
   // for (int i = 0; i < 30; i++) {
   //     servo.write(i*60);
   //     delay(100);

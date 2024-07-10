@@ -45,28 +45,32 @@ def update_state(action):
 
 
 
-while True:
-    # get sensor data
+# while True:
+#     # get sensor data
 
-    # get weather api data
+#     # get weather api data
 
-    # get user input
+#     # get user input
 
-    planner.update_problem(set_light=5, set_humidity=15, set_inside_temp=15, set_water_level=5, set_outside_temp=5,
-                        set_is_raining=False,
-                        set_force_light=False, set_force_window=False, set_force_cooler=False, set_force_water=False,
-                        light_on_state=internal_state["light_on"], windows_open_state=internal_state["windows_open"], air_cooler_on_state=internal_state["air_cooler_on"], water_spender_on_state=internal_state["water_spender_on"]
-                        )
+#     planner.update_problem(set_light=5, set_humidity=15, set_inside_temp=15, set_water_level=5, set_outside_temp=5,
+#                         set_is_raining=False,
+#                         set_force_light=False, set_force_window=False, set_force_cooler=False, set_force_water=False,
+#                         light_on_state=internal_state["light_on"], windows_open_state=internal_state["windows_open"], air_cooler_on_state=internal_state["air_cooler_on"], water_spender_on_state=internal_state["water_spender_on"]
+#                         )
 
-    action = planner.solve()[0]
+#     action = planner.solve()[0]
 
-    print(action)
+#     print(action)
 
-    update_state(action)
+#     update_state(action)
 
-    print(internal_state)
+#     print(internal_state)
 
-    time.sleep(3)
+#     time.sleep(3)
+    
+# class Tester:
+#     def __init__(self, 
+#                  inside):
 
     
 
