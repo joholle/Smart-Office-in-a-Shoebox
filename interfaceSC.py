@@ -66,7 +66,7 @@ class Interface:
         self.window_open_label.grid(column=2, row=0, padx=5)
 
         # Add the slider for window control using grid
-        self.window_slider = tk.Scale(self.window_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_window_status)
+        self.window_slider = tk.Scale(self.window_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.window_status)
         self.window_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
         self.window_slider.set(1)  # Set to default
 
@@ -87,7 +87,7 @@ class Interface:
         self.lights_on_label.grid(column=2, row=0, padx=5)
 
         # Add the slider for lights control using grid
-        self.lights_slider = tk.Scale(self.lights_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_lights_status)
+        self.lights_slider = tk.Scale(self.lights_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.lights_status)
         self.lights_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
         self.lights_slider.set(1)  # Set to default
 
@@ -108,7 +108,7 @@ class Interface:
         self.cooling_on_label.grid(column=2, row=0, padx=5)
 
         # Add the slider for air conditioning control using grid
-        self.cooling_slider = tk.Scale(self.watercooling_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_watercooling_status)
+        self.cooling_slider = tk.Scale(self.watercooling_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.watercooling_status)
         self.cooling_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
         self.cooling_slider.set(1)  # Set to default
 
@@ -179,34 +179,34 @@ class Interface:
         self.root.after(1000, function)
 
     # Function to update window status based on slider position
-    def update_window_status(self, value):
-        value = int(value)
-        if value == 0:
-            self.set_window_status("Force Close")
-        elif value == 1:
-            self.set_window_status("Default")
-        elif value == 2:
-            self.set_window_status("Force Open")
+    # def update_window_status(self, value):
+    #     value = int(value)
+    #     if value == 0:
+    #         self.set_window_status("Force Close")
+    #     elif value == 1:
+    #         self.set_window_status("Default")
+    #     elif value == 2:
+    #         self.set_window_status("Force Open")
 
-    # Function to update lights status based on slider position
-    def update_lights_status(self, value):
-        value = int(value)
-        if value == 0:
-            self.set_lights_status("Force Off")
-        elif value == 1:
-            self.set_lights_status("Default")
-        elif value == 2:
-            self.set_lights_status("Force On")
+    # # Function to update lights status based on slider position
+    # def update_lights_status(self, value):
+    #     value = int(value)
+    #     if value == 0:
+    #         self.set_lights_status("Force Off")
+    #     elif value == 1:
+    #         self.set_lights_status("Default")
+    #     elif value == 2:
+    #         self.set_lights_status("Force On")
 
-    # Function to update air conditioning status based on slider position
-    def update_watercooling_status(self, value):
-        value = int(value)
-        if value == 0:
-            self.set_watercooling_status("Force Off")
-        elif value == 1:
-            self.set_watercooling_status("Default")
-        elif value == 2:
-            self.set_watercooling_status("Force On")
+    # # Function to update air conditioning status based on slider position
+    # def update_watercooling_status(self, value):
+    #     value = int(value)
+    #     if value == 0:
+    #         self.set_watercooling_status("Force Off")
+    #     elif value == 1:
+    #         self.set_watercooling_status("Default")
+    #     elif value == 2:
+    #         self.set_watercooling_status("Force On")
 
     # Callback functions to handle actuator status change
     def set_window_status(self, state):

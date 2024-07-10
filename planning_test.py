@@ -120,21 +120,39 @@ class Tester:
         time.sleep(3)
 
         # window test
-        self.set_sensor_data(inside_temp=30, outside_temp=20)
+        self.set_sensor_data(inside_temp=30)
+        self.set_weather_api(outside_temp=20)
         time.sleep(3)
         self.set_user_inputs(force_window=0)
         time.sleep(3)
-        self.set_sensor_data(inside_temp=20, outside_temp=20)
+        self.set_sensor_data(inside_temp=20)
+        self.set_weather_api(outside_temp=20)
         self.set_user_inputs(force_window=1)
         time.sleep(3)
 
-        # cooler tet
-        self.set_sensor_data(inside_temp=30, outside_temp=40)
+        # cooler test
+        self.set_sensor_data(inside_temp=30)
+        self.set_weather_api(outside_temp=40)
         time.sleep(3)
-        self.set_user_inputs(force_window=0)
+        self.set_user_inputs(force_cooler=0)
         time.sleep(3)
-        self.set_sensor_data(inside_temp=20, outside_temp=20)
-        self.set_user_inputs(force_window=1)
+        self.set_sensor_data(inside_temp=20)
+        self.set_weather_api(outside_temp=20)
+        self.set_user_inputs(force_cooler=1)
+        time.sleep(3)
+
+        # rain test
+        self.set_sensor_data(inside_temp=30)
+        self.set_weather_api(outside_temp=20)
+        time.sleep(3)
+        self.set_sensor_data(water_level=100)
+        self.set_weather_api(is_raining=True)
+        time.sleep(3)
+        self.set_user_inputs(force_windows=2)
+        time.sleep(3)
+        self.set_sensor_data(inside_temp=20, water_level=0)
+        self.set_weather_api(outside_temp=20, is_raining=False)
+        self.set_user_inputs(force_windows=1)
         time.sleep(3)
     
 

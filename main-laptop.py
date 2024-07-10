@@ -15,9 +15,9 @@ class Laptop:
         self.is_raining = False
 
         self.planner = Planner()
-        self.internal_state = { "light_on" : 1,
-                                "windows_open" : 1,
-                                "air_cooler_on" : 1,
+        self.internal_state = { "light_on" : False,
+                                "windows_open" : False,
+                                "air_cooler_on" : False,
                                 # "water_spender_on" : False
                                 }
 
