@@ -29,6 +29,12 @@ class Pi:
 
     def act_on_recieved_message(self, message):
         dt = datetime.datetime.now().strftime("%d-%m-%YT%H:%M:%S")
+        if "set initial state" in message:
+            print(str(dt) + ": setting initial state")
+            self.arduinoSerial.write("servo 0")
+            self.arduinoSerial.write("lights off")
+            self.arduinoSerial.write("fan off")
+            self.arduinoSerial.write("cooler off")
         if "open window" in message:
             print(str(dt) + ": opening window")
             self.arduinoSerial.write("servo 180")

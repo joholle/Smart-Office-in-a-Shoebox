@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from arduinoSerial import ArduinoSerial
 
-
 class Interface:
     def __init__(self):
         # Create the main window
@@ -16,15 +15,20 @@ class Interface:
         self.temperature = tk.StringVar()
         self.light = tk.StringVar()
         self.window_status = tk.StringVar()
-        self.beamer_status = tk.StringVar()
+        self.lights_status = tk.StringVar()
         self.watercooling_status = tk.StringVar()
+        self.weather_temperature = tk.StringVar()
+        self.weather_conditions = tk.StringVar()
 
-        # Create frames for sensors and actuators
+        # Create frames for sensors, actuators, and weather
         self.sensor_frame = ttk.LabelFrame(self.root, text="Sensors", padding=(10, 5))
         self.sensor_frame.grid(column=0, row=0, padx=10, pady=10, sticky='NSEW')
 
         self.actuator_frame = ttk.LabelFrame(self.root, text="Actuators", padding=(10, 5))
         self.actuator_frame.grid(column=1, row=0, padx=10, pady=10, sticky='NSEW')
+
+        self.weather_frame = ttk.LabelFrame(self.root, text="Weather", padding=(10, 5))
+        self.weather_frame.grid(column=0, row=1, columnspan=2, padx=10, pady=10, sticky='NSEW')
 
         # Add sensor labels
         self.humidity_frame = ttk.LabelFrame(self.sensor_frame, text="Humidity", padding=(5, 5))
@@ -55,12 +59,12 @@ class Interface:
         self.window_closed_button = tk.Button(self.window_frame, text="Closed", command=lambda: self.set_window_status("Closed"))
         self.window_closed_button.pack(side="left", padx=5, pady=5)
 
-        self.beamer_frame = ttk.LabelFrame(self.actuator_frame, text="Beamer", padding=(5, 5))
-        self.beamer_frame.grid(column=0, row=1, padx=5, pady=5, sticky='NSEW')
-        self.beamer_on_button = tk.Button(self.beamer_frame, text="On", command=lambda: self.set_beamer_status("On"))
-        self.beamer_on_button.pack(side="left", padx=5, pady=5)
-        self.beamer_off_button = tk.Button(self.beamer_frame, text="Off", command=lambda: self.set_beamer_status("Off"))
-        self.beamer_off_button.pack(side="left", padx=5, pady=5)
+        self.lights_frame = ttk.LabelFrame(self.actuator_frame, text="Lights", padding=(5, 5))
+        self.lights_frame.grid(column=0, row=1, padx=5, pady=5, sticky='NSEW')
+        self.lights_on_button = tk.Button(self.lights_frame, text="On", command=lambda: self.set_lights_status("On"))
+        self.lights_on_button.pack(side="left", padx=5, pady=5)
+        self.lights_off_button = tk.Button(self.lights_frame, text="Off", command=lambda: self.set_lights_status("Off"))
+        self.lights_off_button.pack(side="left", padx=5, pady=5)
 
         self.watercooling_frame = ttk.LabelFrame(self.actuator_frame, text="Air Conditioning", padding=(5, 5))
         self.watercooling_frame.grid(column=0, row=2, padx=5, pady=5, sticky='NSEW')
@@ -69,10 +73,22 @@ class Interface:
         self.watercooling_off_button = tk.Button(self.watercooling_frame, text="Off", command=lambda: self.set_watercooling_status("Off"))
         self.watercooling_off_button.pack(side="left", padx=5, pady=5)
 
+        # Add weather labels
+        self.weather_temperature_frame = ttk.LabelFrame(self.weather_frame, text="Temperature", padding=(5, 5))
+        self.weather_temperature_frame.grid(column=0, row=0, padx=5, pady=5, sticky='NSEW')
+        self.weather_temperature_label = ttk.Label(self.weather_temperature_frame, textvariable=self.weather_temperature, font=("Helvetica", 12))
+        self.weather_temperature_label.pack(padx=10, pady=10)
+
+        self.weather_conditions_frame = ttk.LabelFrame(self.weather_frame, text="Conditions", padding=(5, 5))
+        self.weather_conditions_frame.grid(column=1, row=0, padx=5, pady=5, sticky='NSEW')
+        self.weather_conditions_label = ttk.Label(self.weather_conditions_frame, textvariable=self.weather_conditions, font=("Helvetica", 12))
+        self.weather_conditions_label.pack(padx=10, pady=10)
+
         # Configure column and row weights to make widgets resize proportionally
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_rowconfigure(1, weight=1)
 
         self.sensor_frame.grid_rowconfigure(0, weight=1)
         self.sensor_frame.grid_rowconfigure(1, weight=1)
@@ -85,26 +101,28 @@ class Interface:
         self.actuator_frame.grid_rowconfigure(2, weight=1)
         self.actuator_frame.grid_columnconfigure(0, weight=1)
 
+        self.weather_frame.grid_columnconfigure(0, weight=1)
+        self.weather_frame.grid_columnconfigure(1, weight=1)
+
         # Apply style settings
         style = ttk.Style()
         style.configure("TFrame", background="#E6E6FA")
-        style.configure("TLabel", background="#E6E6FA")
+        style.configure("TLabel")
         style.configure("TLabelFrame", background="#9370DB", foreground="#FFFFFF", borderwidth=2, relief="solid")
         style.configure("TButton", background="#9370DB", foreground="#FFFFFF", font=("Helvetica", 10, "bold"))
 
         # Initialize actuator status
         self.set_window_status("Closed")
-        self.set_beamer_status("Off")
+        self.set_lights_status("Off")
         self.set_watercooling_status("Off")
 
     def start_loop(self, function):
         # Call the update_status function to initialize the status updates
-        self.update_status(function, {"humidity": 0, "water": 0, "temperature": 0, "light": 0})
+        self.update_status(function, {"humidity": 0, "water": 0, "temperature": 0, "light": 0, "weather_temperature": 0, "weather_conditions": ""})
 
         # Start the Tkinter event loop
         self.root.mainloop()
 
-    
     # Function to update the sensor and actuator status
     def update_status(self, function, sensor_data):
         if sensor_data is not None:
@@ -112,7 +130,10 @@ class Interface:
             self.water.set(str(sensor_data["water"]))
             self.temperature.set(str(sensor_data["temperature"]) + "°C")
             self.light.set(str(sensor_data["light"]))
-        
+            self.weather_temperature.set(str(sensor_data["weather_temperature"]) + "°C")
+            self.weather_conditions.set(sensor_data["weather_conditions"])
+            
+
         # Update the status every second
         self.root.after(1000, function)
 
@@ -127,15 +148,15 @@ class Interface:
             self.window_open_button.config(bg="grey", activebackground="grey")
             self.window_closed_button.config(bg="red", activebackground="red")
 
-    def set_beamer_status(self, state):
+    def set_lights_status(self, state):
         if state == "On":
-            self.beamer_status.set("On")
-            self.beamer_on_button.config(bg="green", activebackground="green")
-            self.beamer_off_button.config(bg="grey", activebackground="grey")
+            self.lights_status.set("On")
+            self.lights_on_button.config(bg="green", activebackground="green")
+            self.lights_off_button.config(bg="grey", activebackground="grey")
         else:
-            self.beamer_status.set("Off")
-            self.beamer_on_button.config(bg="grey", activebackground="grey")
-            self.beamer_off_button.config(bg="red", activebackground="red")
+            self.lights_status.set("Off")
+            self.lights_on_button.config(bg="grey", activebackground="grey")
+            self.lights_off_button.config(bg="red", activebackground="red")
 
     def set_watercooling_status(self, state):
         if state == "On":
@@ -147,19 +168,32 @@ class Interface:
             self.watercooling_on_button.config(bg="grey", activebackground="grey")
             self.watercooling_off_button.config(bg="red", activebackground="red")
 
-    def get_temperatur(self):
+    def get_manual_input(self):
+        is_window_open = self.window_status.get() == "Open"
+        is_lights_on = self.lights_status.get() == "On"
+        is_cooling_on = self.watercooling_status.get() == "On"
+        return is_window_open, is_lights_on, is_cooling_on
+
+    def get_temperature(self):
         return self.temperature
-    
+
     def get_humidity(self):
         return self.humidity
 
     def get_light(self):
         return self.light
-    
+
     def get_water_level(self):
         return self.water
+
     def get_window_status(self):
         return self.window_status
-    
+
     def get_watercooling_status(self):
         return self.watercooling_status
+
+    def get_weather_temperature(self):
+        return self.weather_temperature
+
+    def get_weather_conditions(self):
+        return self.weather_conditions

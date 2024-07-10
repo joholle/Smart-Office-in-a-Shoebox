@@ -46,3 +46,5 @@ if __name__ == '__main__':
         arduino.rotate_servo(number)
         time.sleep(4)
         number += 45
+        if number >= 180:
+            number = 0

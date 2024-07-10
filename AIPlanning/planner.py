@@ -12,17 +12,19 @@ class Planner:
         domain_file.close()
 
     def update_problem(self, 
-                       set_light, set_humidity, set_inside_temp, set_water_level, set_outside_temp,
+                       set_light, set_humidity, set_inside_temp, set_water_level, 
+                       set_outside_temp, 
                        set_is_raining,
-                       set_force_light, set_force_window, set_force_cooler, set_force_water,
-                       light_on_state, windows_open_state, air_cooler_on_state, water_spender_on_state
+                       set_force_light, set_force_window, set_force_cooler, # set_force_water,
+                       light_on_state, windows_open_state, air_cooler_on_state,#  water_spender_on_state
                        ):
         problem = Problem().create( domain=self.domain,
-                                set_light=set_light, set_humidity=set_humidity, set_inside_temp=set_inside_temp, set_water_level=set_water_level, set_outside_temp=set_outside_temp,
+                                set_light=set_light, set_humidity=set_humidity, set_inside_temp=set_inside_temp, set_water_level=set_water_level,
+                                set_outside_temp=set_outside_temp,  
                                 set_is_raining=set_is_raining,
-                                set_force_light=set_force_light, set_force_window=set_force_window, set_force_cooler=set_force_cooler, set_force_water=set_force_water,
+                                set_force_light=set_force_light, set_force_window=set_force_window, set_force_cooler=set_force_cooler, # set_force_water=set_force_water,
                                 # state: 
-                                light_on_state=light_on_state, windows_open_state=windows_open_state, air_cooler_on_state=air_cooler_on_state, water_spender_on_state=water_spender_on_state
+                                light_on_state=light_on_state, windows_open_state=windows_open_state, air_cooler_on_state=air_cooler_on_state, # water_spender_on_state=water_spender_on_state
                                 )
 
         problem_file = open("resources/problem.pddl", "w")
