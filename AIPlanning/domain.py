@@ -25,3 +25,9 @@ class Domain:
                 )
 
         return domain
+    
+    def set_thresholds(self, light, humidity, temperature, water_level):
+        LIGHT_THRESHOLD = light
+        HUMIDITY_THRESHOLD = humidity
+        TEMPERATURE_THRESHOLD = temperature
+        WATER_LEVEL_THRESHOLD = water_level

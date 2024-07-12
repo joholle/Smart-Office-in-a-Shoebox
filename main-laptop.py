@@ -51,8 +51,12 @@ class Laptop:
         })
         # get user interput from interface
         set_force_window, set_force_light, set_force_cooler = self.interface.get_manual_input()
-
         print(set_force_window, set_force_light, set_force_cooler)
+
+        # TODO: if user inputs new tresholds for sensor data then do this:
+        #
+        # planner.domain.set_thresholds(new_light_threshold, new_humidity_threshold, new_temperature_threshold, new_water_level_threshold)
+        # planner.domain.create()
 
         # process readings with pddl
         self.planner.update_problem(
