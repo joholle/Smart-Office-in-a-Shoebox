@@ -36,7 +36,7 @@ class Tester:
     def __set_test_data(self, current_time:datetime.time):
         seconds_passed = int((current_time - self.start_time).total_seconds())
 
-        print(seconds_passed)
+        # print(seconds_passed)
 
         # light test
         if seconds_passed % 45 < 3:

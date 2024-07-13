@@ -14,11 +14,10 @@ class Planner:
 
     def update_domain(self, target_light, target_humdity, target_temperature, target_water_level):
         self.domain.set_thresholds(target_light, target_humdity, target_temperature, target_water_level)
-        self.domain.create()
+        self.domain_core = self.domain.create()
         domain_file = open("resources/domain.pddl", "w")
         domain_file.write(domain_to_string(self.domain_core))
         domain_file.close()
-        self.domain_core = self.domain.core
 
     def update_problem(self, 
                        set_light, set_humidity, set_inside_temp, set_water_level, 

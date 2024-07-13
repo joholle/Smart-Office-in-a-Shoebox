@@ -8,12 +8,19 @@ from pddl.logic.base import Not
 from pddl.action import Action
 
 from AIPlanning.logic import *
+import json
 
 # thresholds
 LIGHT_THRESHOLD = 200
 HUMIDITY_THRESHOLD = 70
 TEMPERATURE_THRESHOLD = 25
 WATER_LEVEL_THRESHOLD = 20
+with open("AIPlanning/THRESHOLDS.json", "r") as json_file:
+    thresholds_json = json.load(json_file)
+    LIGHT_THRESHOLD = thresholds_json["LIGHT_THRESHOLD"]
+    HUMIDITY_THRESHOLD = thresholds_json["HUMIDITY_THRESHOLD"]
+    TEMPERATURE_THRESHOLD = thresholds_json["TEMPERATURE_THRESHOLD"]
+    WATER_LEVEL_THRESHOLD = thresholds_json["WATER_LEVEL_THRESHOLD"]
 
 # light actions
 turn_on_light = Action(
@@ -111,7 +118,7 @@ no_action = Action(
     parameters=[],
     precondition=Not(
         # no light action possible
-        (LesserThan(light, NumericValue(200)) & Not(light_on) & EqualTo(force_light, NumericValue(1))) |
+        (LesserThan(light, NumericValue(LIGHT_THRESHOLD)) & Not(light_on) & EqualTo(force_light, NumericValue(1))) |
         (Not(light_on) & EqualTo(force_light, NumericValue(2))) |
         (light_on & EqualTo(force_light, NumericValue(0))) |
 

@@ -13,6 +13,7 @@ class Laptop:
         self.outside_temp = 20
         self.is_raining = False
 
+
         self.planner = Planner()
         self.internal_state = { "light_on" : False,
                                 "windows_open" : False,
@@ -43,7 +44,7 @@ class Laptop:
 
         # test: weather api
         self.outside_temp, self.is_raining = self.tester.get_weather_api()
-        print(self.outside_temp, self.is_raining)
+        # print(self.outside_temp, self.is_raining)
         
         # get sensor readings
         readings = self.get_readings()
@@ -63,14 +64,14 @@ class Laptop:
             "temperature": test_temperature,
             "water": test_water
         })
-        print(test_light, test_humidity, test_temperature, test_water)
+        # print(test_light, test_humidity, test_temperature, test_water)
 
         # get user interput for actuators from interface
         set_force_window, set_force_light, set_force_cooler = self.interface.get_manual_input()
 
         # test: user input
         set_force_window, set_force_light, set_force_cooler = self.tester.get_user_inputs()
-        print(set_force_window, set_force_light, set_force_cooler)
+        # print(set_force_window, set_force_light, set_force_cooler)
 
         # get user interput for target values from interface
         target_temperature, target_humdity, target_light = self.interface.get_target_input()
@@ -104,6 +105,9 @@ class Laptop:
                 return json.loads(received_message)
 
     def update_state(self, action):
+        self.interface.update_window_status(self.internal_state["windows_open"])
+        self.interface.update_lights_status(self.internal_state["light_on"])
+        self.interface.update_watercooling_status(self.internal_state["air_cooler_on"])
         if action == "turn_on_light" or action == "force_on_light":
             self.internal_state["light_on"] = True
             self.mqtt.publish(str(self.id) + " turn on lights")

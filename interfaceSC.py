@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from arduinoSerial import ArduinoSerial
 
 class Interface:
     def __init__(self):
@@ -264,31 +263,26 @@ class Interface:
     def update_window_status(self, value):
         value = int(value)
         if value == 0:
-            self.set_window_status("Force Close")
+            self.set_window_status("Closed")
         elif value == 1:
-            self.set_window_status("Default")
-        elif value == 2:
-            self.set_window_status("Force Open")
+            self.set_window_status("Open")
+    
 
     # Function to update lights status based on slider position
     def update_lights_status(self, value):
         value = int(value)
         if value == 0:
-            self.set_lights_status("Force Off")
+            self.set_lights_status("Off")
         elif value == 1:
-            self.set_lights_status("Default")
-        elif value == 2:
-            self.set_lights_status("Force On")
+            self.set_lights_status("On")
 
     # Function to update air conditioning status based on slider position
     def update_watercooling_status(self, value):
         value = int(value)
         if value == 0:
-            self.set_watercooling_status("Force Off")
+            self.set_watercooling_status("Off")
         elif value == 1:
-            self.set_watercooling_status("Default")
-        elif value == 2:
-            self.set_watercooling_status("Force On")
+            self.set_watercooling_status("On")
 
     # Callback functions to handle actuator status change
     def set_window_status(self, state):
@@ -319,6 +313,8 @@ class Interface:
         self.target_temperature.set(f"{self.custom_temperature.get()}°C")
         self.target_humidity.set(f"{self.custom_humidity.get()}%")
         self.target_light.set(str(self.custom_light.get()))
+        # print(self.get_target_input())
+        
 
     def get_manual_input(self):
         is_window_open = self.get_int_from_state(self.window_status.get())
