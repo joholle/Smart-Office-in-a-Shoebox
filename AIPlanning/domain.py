@@ -5,6 +5,9 @@ from AIPlanning.actions import *
 from AIPlanning.requirements import * 
 
 class Domain:
+    def __init__(self):
+        self.core = self.create()
+
     def create(self) -> pddl_core.Domain:        
         domain = pddl_core.Domain("office_room",
                 requirements=requirements,
@@ -24,7 +27,7 @@ class Domain:
                          no_action]
                 )
 
-        return domain
+        return domain.core
     
     def set_thresholds(self, light, humidity, temperature, water_level):
         LIGHT_THRESHOLD = light

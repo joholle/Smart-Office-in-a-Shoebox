@@ -12,6 +12,7 @@
 #define SERVO_PIN 3
 #define COOLER_PIN 4
 #define FAN_PIN 5
+#define LIGHT_PIN 6
 #define DHTTYPE DHT11
 
 
@@ -22,6 +23,7 @@ bool string_complete = false;
 int servo_degree = 0;
 bool is_fan_active = false;
 bool is_cooler_active = false;
+bool is_lights_on = false;
 
 void setup() {
   Serial.begin(9600);
@@ -32,6 +34,7 @@ void setup() {
 
   digitalWrite(COOLER_PIN, LOW);
   digitalWrite(FAN_PIN, LOW);
+  digitalWrite(LIGHT_PIN, LOW);
 }
 
 void loop() {
@@ -50,6 +53,7 @@ void loop() {
       doc["servo"] = servo_degree;
       doc["fan"] = is_fan_active;
       doc["cooler"] = is_cooler_active;
+      doc["lights"] = is_lights_on;
 
       serializeJson(doc, Serial);
       Serial.println();
@@ -69,6 +73,12 @@ void loop() {
     } else if (input == "cooler off\n") {
       is_cooler_active = false;
       digitalWrite(COOLER_PIN, LOW);
+    } else if (input == "lights on\n") {
+      is_lights_on = true;
+      digitalWrite(LIGHT_PIN, HIGH);
+    } else if (input == "lights off\n") {
+      is_lights_on = false;
+      digitalWrite(LIGHT_PIN, LOW);
     }
 
     input = "";

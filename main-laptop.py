@@ -3,12 +3,11 @@ from interfaceSC import Interface
 import json, time
 from AIPlanning.planner import Planner
 import requests
+from Tester import Tester
 
 class Laptop:
     def __init__(self):
         self.mqtt = MQTT("Laptop", "masterpi", "laptop_channel", "pi_channel")
-        _pause_before_publish = time.sleep(1)
-        self.mqtt.publish("set initial state")
         self.id = 0
         self.old_messages = []
         self.outside_temp = 20
@@ -17,9 +16,11 @@ class Laptop:
         self.planner = Planner()
         self.internal_state = { "light_on" : False,
                                 "windows_open" : False,
-                                "air_cooler_on" : False,
-                                # "water_spender_on" : False
+                                "air_cooler_on" : False
                                 }
+
+        self.tester = Tester()
+        self.tester.start()
 
         self.interface = Interface()
         self.interface.start_loop(self.update)
@@ -39,6 +40,10 @@ class Laptop:
         except: 
             self.outside_temp = self.outside_temp
             self.is_raining = self.is_raining
+
+        # test: weather api
+        self.outside_temp, self.is_raining = self.tester.get_weather_api()
+        print(self.outside_temp, self.is_raining)
         
         # get sensor readings
         readings = self.get_readings()
@@ -49,14 +54,29 @@ class Laptop:
             "weather_temperature": self.outside_temp,
             "weather_conditions": "Raining" if self.is_raining else "Clear"
         })
-        # get user interput from interface
+
+        # test: sensor data
+        test_light, test_humidity, test_temperature, test_water = self.tester.get_sensor_data()
+        readings.update({
+            "light": test_light,
+            "humidity": test_humidity,
+            "temperature": test_temperature,
+            "water": test_water
+        })
+        print(test_light, test_humidity, test_temperature, test_water)
+
+        # get user interput for actuators from interface
         set_force_window, set_force_light, set_force_cooler = self.interface.get_manual_input()
+
+        # test: user input
+        set_force_window, set_force_light, set_force_cooler = self.tester.get_user_inputs()
         print(set_force_window, set_force_light, set_force_cooler)
 
-        # TODO: if user inputs new tresholds for sensor data then do this:
-        #
-        # planner.domain.set_thresholds(new_light_threshold, new_humidity_threshold, new_temperature_threshold, new_water_level_threshold)
-        # planner.domain.create()
+        # get user interput for target values from interface
+        target_temperature, target_humdity, target_light = self.interface.get_target_input()
+        self.planner.update_domain(target_light, target_humdity, target_temperature, 20)
+        # self.planner.domain.set_thresholds(target_light, target_humdity, target_temperature, 20)
+        # self.planner.domain.create()
 
         # process readings with pddl
         self.planner.update_problem(

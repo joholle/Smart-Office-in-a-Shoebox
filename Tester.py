@@ -15,7 +15,8 @@ class Tester:
         self.force_window = 1
         self.force_cooler = 1
 
-        self.start_time = datetime.datetime.now().time()
+        self.start_time = datetime.datetime.now()
+        # self.start_time = int(time.time())
     
     def __set_sensor_data(self, light=None, humidity=None, inside_temp=None, water_level=None):
         if light != None: self.light = light
@@ -33,8 +34,11 @@ class Tester:
         if force_cooler != None: self.force_cooler = force_cooler
 
     def __set_test_data(self, current_time:datetime.time):
-        seconds_passed = current_time.second - self.start_time.second
+        seconds_passed = int((current_time - self.start_time).total_seconds())
 
+        print(seconds_passed)
+
+        # light test
         if seconds_passed % 45 < 3:
             return
         elif seconds_passed % 45 < 6:
@@ -82,17 +86,17 @@ class Tester:
             self.__set_user_inputs(force_window=1)
 
     def get_sensor_data(self):
-        self.__set_test_data(datetime.datetime.now().time())
+        self.__set_test_data(datetime.datetime.now())
         return self.light, self.humidity, self.inside_temp, self.water_level
     
     def get_weather_api(self):
-        self.__set_test_data(datetime.datetime.now().time())
+        self.__set_test_data(datetime.datetime.now())
         return self.outside_temp, self.is_raining
     
     def get_user_inputs(self):
-        self.__set_test_data(datetime.datetime.now().time())
+        self.__set_test_data(datetime.datetime.now())
         return self.force_light, self.force_window, self.force_cooler
 
     def start(self):
-        self.start_time = datetime.datetime.now().time()
+        self.start_time = datetime.datetime.now()
         time.sleep(0.5)

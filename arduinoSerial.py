@@ -25,7 +25,7 @@ class ArduinoSerial:
                 message_to_arduino = ("servo %d   \n" % degree).encode()
             else:
                 return print("Invalid degree for servo")
-        elif msg in ["fan on", "fan off", "cooler on", "cooler off"]:
+        elif msg in ["fan on", "fan off", "cooler on", "cooler off", "lights on", "lights off"]:
             message_to_arduino = ("%s\n" % msg).encode()
         else:
             return print("invalid arduinoSerial.write argument: " + msg)
