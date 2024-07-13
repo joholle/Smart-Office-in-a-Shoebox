@@ -74,7 +74,7 @@ class Interface:
         self.window_open_label.grid(column=2, row=0, padx=5)
 
         # Add the slider for window control using grid
-        self.window_slider = tk.Scale(self.window_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_window_status)
+        self.window_slider = tk.Scale(self.window_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.window_status)
         self.window_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
         self.window_slider.set(1)  # Set to default
 
@@ -95,7 +95,7 @@ class Interface:
         self.lights_on_label.grid(column=2, row=0, padx=5)
 
         # Add the slider for lights control using grid
-        self.lights_slider = tk.Scale(self.lights_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_lights_status)
+        self.lights_slider = tk.Scale(self.lights_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.lights_status)
         self.lights_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
         self.lights_slider.set(1)  # Set to default
 
@@ -116,7 +116,7 @@ class Interface:
         self.cooling_on_label.grid(column=2, row=0, padx=5)
 
         # Add the slider for air conditioning control using grid
-        self.cooling_slider = tk.Scale(self.watercooling_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.update_watercooling_status)
+        self.cooling_slider = tk.Scale(self.watercooling_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.watercooling_status)
         self.cooling_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
         self.cooling_slider.set(1)  # Set to default
 
@@ -317,9 +317,9 @@ class Interface:
         
 
     def get_manual_input(self):
-        is_window_open = self.get_int_from_state(self.window_status.get())
-        is_lights_on = self.get_int_from_state(self.lights_status.get())
-        is_cooling_on = self.get_int_from_state(self.watercooling_status.get())
+        is_window_open = self.window_slider.get()
+        is_lights_on = self.lights_slider.get()
+        is_cooling_on = self.cooling_slider.get()
         return is_window_open, is_lights_on, is_cooling_on
 
     def get_target_input(self):
@@ -327,17 +327,6 @@ class Interface:
         target_humidity = int(float(self.target_humidity.get().replace("%",'')))
         target_light = int(float(self.target_light.get()))
         return target_temperature, target_humidity, target_light
-    
-    def get_int_from_state(self, state):
-        if state in ["Force Close", "Force Off"]:
-            return 0
-        elif state in ["Default"]:
-            return 1
-        elif state in ["Force Open", "Force On"]:
-            return 2
-        else:
-            print("invalid state")
-            return -1
 
     def get_temperature(self):
         return self.temperature

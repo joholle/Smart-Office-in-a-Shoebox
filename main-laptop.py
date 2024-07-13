@@ -41,10 +41,6 @@ class Laptop:
         except: 
             self.outside_temp = self.outside_temp
             self.is_raining = self.is_raining
-
-        # test: weather api
-        self.outside_temp, self.is_raining = self.tester.get_weather_api()
-        # print(self.outside_temp, self.is_raining)
         
         # get sensor readings
         readings = self.get_readings()
@@ -56,28 +52,26 @@ class Laptop:
             "weather_conditions": "Raining" if self.is_raining else "Clear"
         })
 
-        # test: sensor data
-        test_light, test_humidity, test_temperature, test_water = self.tester.get_sensor_data()
-        readings.update({
-            "light": test_light,
-            "humidity": test_humidity,
-            "temperature": test_temperature,
-            "water": test_water
-        })
-        # print(test_light, test_humidity, test_temperature, test_water)
-
         # get user interput for actuators from interface
         set_force_window, set_force_light, set_force_cooler = self.interface.get_manual_input()
-
-        # test: user input
-        set_force_window, set_force_light, set_force_cooler = self.tester.get_user_inputs()
-        # print(set_force_window, set_force_light, set_force_cooler)
+        print(set_force_window, set_force_light, set_force_cooler)
 
         # get user interput for target values from interface
         target_temperature, target_humdity, target_light = self.interface.get_target_input()
         self.planner.update_domain(target_light, target_humdity, target_temperature, 20)
-        # self.planner.domain.set_thresholds(target_light, target_humdity, target_temperature, 20)
-        # self.planner.domain.create()
+
+        # ----------------------------------------------- test values -----------------------------------------------
+        # self.outside_temp, self.is_raining = self.tester.get_weather_api()
+        # test_light, test_humidity, test_temperature, test_water = self.tester.get_sensor_data()
+        # readings.update({
+        #     "light": test_light,
+        #     "humidity": test_humidity,
+        #     "temperature": test_temperature,
+        #     "water": test_water
+        # })
+        # set_force_window, set_force_light, set_force_cooler = self.tester.get_user_inputs()
+        # self.planner.update_domain(150, 50, 25, 20)
+        # -----------------------------------------------------------------------------------------------------------
 
         # process readings with pddl
         self.planner.update_problem(
@@ -86,7 +80,6 @@ class Laptop:
             set_is_raining=self.is_raining,
             set_force_light=set_force_light, set_force_window=set_force_window, set_force_cooler=set_force_cooler, # set_force_water=False,
             light_on_state=self.internal_state["light_on"], windows_open_state=self.internal_state["windows_open"], air_cooler_on_state=self.internal_state["air_cooler_on"], # water_spender_on_state=self.internal_state["water_spender_on"]
-            
             )
         
         action = self.planner.solve()[0]

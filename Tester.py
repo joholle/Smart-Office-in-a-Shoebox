@@ -4,7 +4,7 @@ import datetime
 class Tester:
     def __init__(self):
         self.light = 200
-        self.humidity = 70
+        self.humidity = 20
         self.inside_temp = 20 
         self.water_level = 0
 
@@ -39,50 +39,59 @@ class Tester:
         # print(seconds_passed)
 
         # light test
-        if seconds_passed % 45 < 3:
+        if seconds_passed % 54 < 3:
             return
-        elif seconds_passed % 45 < 6:
+        elif seconds_passed % 54 < 6:
             self.__set_sensor_data(light=100)
-        elif seconds_passed % 45 < 9:
+        elif seconds_passed % 54 < 9:
             self.__set_user_inputs(force_light=0)
-        elif seconds_passed % 45 < 12:
+        elif seconds_passed % 54 < 12:
             self.__set_sensor_data(light=200)
             self.__set_user_inputs(force_light=1)
 
         # window test
-        elif seconds_passed % 45 < 15:
+        elif seconds_passed % 54 < 15:
             self.__set_sensor_data(inside_temp=30)
             self.__set_weather_api(outside_temp=20)
-        elif seconds_passed % 45 < 18:
+        elif seconds_passed % 54 < 18:
             self.__set_user_inputs(force_window=0)
-        elif seconds_passed % 45 < 21:
+        elif seconds_passed % 54 < 21:
             self.__set_sensor_data(inside_temp=20)
             self.__set_weather_api(outside_temp=20)
             self.__set_user_inputs(force_window=1)
 
         # cooler test
-        elif seconds_passed % 45 < 24:
+        elif seconds_passed % 54 < 24:
             self.__set_sensor_data(inside_temp=30)
             self.__set_weather_api(outside_temp=40)
-        elif seconds_passed % 45 < 27:
+        elif seconds_passed % 54 < 27:
             self.__set_user_inputs(force_cooler=0)
-        elif seconds_passed % 45 < 30:
+        elif seconds_passed % 54 < 30:
             self.__set_sensor_data(inside_temp=20)
             self.__set_weather_api(outside_temp=20)
             self.__set_user_inputs(force_cooler=1)
 
         # rain test
-        elif seconds_passed % 45 < 33:
+        elif seconds_passed % 54 < 33:
             self.__set_sensor_data(inside_temp=30)
             self.__set_weather_api(outside_temp=20)
-        elif seconds_passed % 45 < 36:
+        elif seconds_passed % 54 < 36:
             self.__set_sensor_data(water_level=100)
             self.__set_weather_api(is_raining=True)
-        elif seconds_passed % 45 < 39:
+        elif seconds_passed % 54 < 39:
             self.__set_user_inputs(force_window=2)
-        elif seconds_passed % 45 < 42:
+        elif seconds_passed % 54 < 42:
             self.__set_sensor_data(inside_temp=20, water_level=0)
             self.__set_weather_api(outside_temp=20, is_raining=False)
+            self.__set_user_inputs(force_window=1)
+
+        # humidity test
+        elif seconds_passed % 54 < 54:
+            self.__set_sensor_data(humidity=100)
+        elif seconds_passed % 54 < 48:
+            self.__set_user_inputs(force_window=0)
+        elif seconds_passed % 54 < 51:
+            self.__set_sensor_data(humidity=20)
             self.__set_user_inputs(force_window=1)
 
     def get_sensor_data(self):

@@ -24,16 +24,15 @@ class Domain:
                            force_light: None, force_window: None, force_cooler: None, #force_water: None
                            },
                 actions=[actions.turn_on_light, actions.force_on_light, actions.force_off_light,
-                         actions.open_window, actions.close_window, actions.force_open_window, actions.force_close_window,
+                         actions.open_window, actions.close_window, actions.force_close_window, actions.force_open_window,
                          actions.turn_on_cooler, actions.turn_off_cooler, actions.force_turn_on_cooler, actions.force_turn_off_cooler,
-                         # fill_up_water, stop_water, force_fill_up_water,
                          actions.no_action]
                 )
 
         return domain
     
     def set_thresholds(self, light, humidity, temperature, water_level):
-        print("threshholds: " + str(light) + " " + str(humidity) + " " + str(temperature) + " " + str(water_level))
+        # print("threshholds: " + str(light) + " " + str(humidity) + " " + str(temperature) + " " + str(water_level))
         # LIGHT_THRESHOLD = light
         # HUMIDITY_THRESHOLD = humidity
         # TEMPERATURE_THRESHOLD = temperature
