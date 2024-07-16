@@ -24,40 +24,40 @@ class Interface:
 
         # Create frames for sensors, actuators, weather, targets, and settings
         self.sensor_frame = ttk.LabelFrame(self.root, text="Sensors", padding=(10, 5))
-        self.sensor_frame.grid(column=0, row=0, padx=10, pady=10, sticky='NSEW')
+        self.sensor_frame.grid(column=0, row=0, rowspan=3 ,padx=10, pady=10, sticky='NSEW')
 
         self.actuator_frame = ttk.LabelFrame(self.root, text="Actuators", padding=(10, 5))
-        self.actuator_frame.grid(column=1, row=0, padx=10, pady=10, sticky='NSEW')
+        self.actuator_frame.grid(column=1, row=0, rowspan=3 ,padx=10, pady=10, sticky='NSEW')
 
         self.weather_frame = ttk.LabelFrame(self.root, text="Weather", padding=(10, 5))
-        self.weather_frame.grid(column=0, row=1, columnspan=2, padx=10, pady=10, sticky='NSEW')
+        self.weather_frame.grid(column=2, row=0, columnspan=2, padx=10, pady=10, sticky='NSEW')
 
         self.target_frame = ttk.LabelFrame(self.root, text="Desired Targets", padding=(10, 5))
-        self.target_frame.grid(column=0, row=2, columnspan=2, padx=10, pady=10, sticky='NSEW')
+        self.target_frame.grid(column=2, row=1, columnspan=2, padx=10, pady=10, sticky='NSEW')
 
         self.settings_frame = ttk.LabelFrame(self.root, text="Settings", padding=(10, 5))
-        self.settings_frame.grid(column=0, row=3, columnspan=2, padx=10, pady=10, sticky='NSEW')
+        self.settings_frame.grid(column=2, row=2, columnspan=2, padx=10, pady=10, sticky='NSEW')
 
         # Add sensor labels
         self.humidity_frame = ttk.LabelFrame(self.sensor_frame, text="Humidity", padding=(5, 5))
         self.humidity_frame.grid(column=0, row=0, padx=5, pady=5, sticky='NSEW')
         self.humidity_label = ttk.Label(self.humidity_frame, textvariable=self.humidity, font=("Helvetica", 12))
-        self.humidity_label.pack(padx=10, pady=10)
+        self.humidity_label.pack(padx=10, pady=10, expand=True)
 
         self.temperature_frame = ttk.LabelFrame(self.sensor_frame, text="Temperature", padding=(5, 5))
         self.temperature_frame.grid(column=0, row=1, padx=5, pady=5, sticky='NSEW')
         self.temperature_label = ttk.Label(self.temperature_frame, textvariable=self.temperature, font=("Helvetica", 12))
-        self.temperature_label.pack(padx=10, pady=10)
+        self.temperature_label.pack(padx=10, pady=10, expand=True)
 
         self.light_frame = ttk.LabelFrame(self.sensor_frame, text="Light Intensity", padding=(5, 5))
         self.light_frame.grid(column=0, row=2, padx=5, pady=5, sticky='NSEW')
         self.light_label = ttk.Label(self.light_frame, textvariable=self.light, font=("Helvetica", 12))
-        self.light_label.pack(padx=10, pady=10)
+        self.light_label.pack(padx=10, pady=10, expand=True)
 
         self.water_frame = ttk.LabelFrame(self.sensor_frame, text="Water", padding=(5, 5))
         self.water_frame.grid(column=0, row=3, padx=5, pady=5, sticky='NSEW')
         self.water_label = ttk.Label(self.water_frame, textvariable=self.water, font=("Helvetica", 12))
-        self.water_label.pack(padx=10, pady=10)
+        self.water_label.pack(padx=10, pady=10, expand=True)
 
         # Add actuator controls
         self.window_frame = ttk.LabelFrame(self.actuator_frame, text="Windows", padding=(5, 5))
@@ -127,7 +127,8 @@ class Interface:
         self.weather_temperature_frame = ttk.LabelFrame(self.weather_frame, text="Temperature", padding=(5, 5))
         self.weather_temperature_frame.grid(column=0, row=0, padx=5, pady=5, sticky='NSEW')
         self.weather_temperature_label = ttk.Label(self.weather_temperature_frame, textvariable=self.weather_temperature, font=("Helvetica", 12))
-        self.weather_temperature_label.pack(padx=10, pady=10)
+        self.weather_temperature_label.pack(padx=10, pady=10, expand=True)
+
 
         self.weather_conditions_frame = ttk.LabelFrame(self.weather_frame, text="Conditions", padding=(5, 5))
         self.weather_conditions_frame.grid(column=1, row=0, padx=5, pady=5, sticky='NSEW')
@@ -138,7 +139,7 @@ class Interface:
         self.target_temperature_frame = ttk.LabelFrame(self.target_frame, text="Target Temperature", padding=(5, 5))
         self.target_temperature_frame.grid(column=0, row=0, padx=5, pady=5, sticky='NSEW')
         self.target_temperature_label = ttk.Label(self.target_temperature_frame, textvariable=self.target_temperature, font=("Helvetica", 12))
-        self.target_temperature_label.pack(padx=10, pady=10)
+        self.target_temperature_label.pack(padx=10, pady=10, expand=True)
 
         self.target_humidity_frame = ttk.LabelFrame(self.target_frame, text="Target Humidity", padding=(5, 5))
         self.target_humidity_frame.grid(column=1, row=0, padx=5, pady=5, sticky='NSEW')
@@ -156,10 +157,10 @@ class Interface:
         self.settings_frame.grid_columnconfigure(1, weight=1)
         self.settings_frame.grid_columnconfigure(2, weight=1)
 
-        self.sparsam_button = ttk.Radiobutton(self.settings_frame, text="Sparsam", variable=self.settings_var, value="Sparsam", command=self.apply_settings)
+        self.sparsam_button = ttk.Radiobutton(self.settings_frame, text="Saving", variable=self.settings_var, value="Sparsam", command=self.apply_settings)
         self.sparsam_button.grid(column=0, row=0, padx=10, pady=5, sticky='NSEW')
 
-        self.komfort_button = ttk.Radiobutton(self.settings_frame, text="Komfort", variable=self.settings_var, value="Komfort", command=self.apply_settings)
+        self.komfort_button = ttk.Radiobutton(self.settings_frame, text="Comfort", variable=self.settings_var, value="Komfort", command=self.apply_settings)
         self.komfort_button.grid(column=1, row=0, padx=10, pady=5, sticky='NSEW')
 
         self.custom_button = ttk.Radiobutton(self.settings_frame, text="Custom", variable=self.settings_var, value="Custom", command=self.apply_settings)
@@ -193,6 +194,13 @@ class Interface:
 
         self.custom_settings_frame.grid_remove()  # Hide initially
 
+
+        self.root.columnconfigure(0, weight=1)
+        self.root.columnconfigure(1, weight=1)
+        self.root.rowconfigure(0, weight=1)
+        self.root.rowconfigure(1, weight=1)
+        self.root.rowconfigure(2, weight=1)
+        self.root.rowconfigure(3, weight=1)
         # Configure column and row weights to make widgets resize proportionally
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
@@ -232,9 +240,9 @@ class Interface:
         style.configure("TButton", background="#9370DB", foreground="#FFFFFF", font=("Helvetica", 10, "bold"))
 
         # Initialize actuator status
-        self.set_window_status("Default")
-        self.set_lights_status("Default")
-        self.set_watercooling_status("Default")
+        self.set_window_status("Closed")
+        self.set_lights_status("Off")
+        self.set_watercooling_status("Off")
 
         # Initialize target values
         self.apply_settings()
@@ -309,12 +317,52 @@ class Interface:
         elif setting == "Custom":
             self.custom_settings_frame.grid()
 
+    # def apply_custom_settings(self):
+    #     self.target_temperature.set(f"{self.custom_temperature.get()}°C")
+    #     self.target_humidity.set(f"{self.custom_humidity.get()}%")
+    #     self.target_light.set(str(self.custom_light.get()))
+    #     # print(self.get_target_input())
     def apply_custom_settings(self):
-        self.target_temperature.set(f"{self.custom_temperature.get()}°C")
-        self.target_humidity.set(f"{self.custom_humidity.get()}%")
-        self.target_light.set(str(self.custom_light.get()))
-        # print(self.get_target_input())
-        
+    # Store old values to revert if needed
+        old_temp = self.target_temperature.get()
+        old_hum = self.target_humidity.get()
+        old_light = self.target_light.get()
+
+        # Retrieve new values from entry fields
+        try:
+            custom_temp = float(self.custom_temperature.get())
+            custom_hum = float(self.custom_humidity.get())
+            custom_light = float(self.custom_light.get())
+            
+            # Check if the values are within the specified range
+            valid_temp = 0 <= custom_temp <= 100
+            valid_hum = 0 <= custom_hum <= 100
+            valid_light = custom_light > 0
+
+            if valid_temp:
+                self.target_temperature.set(f"{custom_temp}°C")
+            else:
+                self.target_temperature.set(old_temp)
+
+            if valid_hum:
+                self.target_humidity.set(f"{custom_hum}%")
+            else:
+                self.target_humidity.set(old_hum)
+
+            if valid_light:
+                self.target_light.set(str(custom_light))
+            else:
+                self.target_light.set(old_light)
+
+        except ValueError:
+            # If there's a conversion error, revert to old values
+            self.target_temperature.set(old_temp)
+            self.target_humidity.set(old_hum)
+            self.target_light.set(old_light)
+            # Optional: Log the error or notify the user
+            import tkinter.messagebox
+            tkinter.messagebox.showerror("Input Error", "Invalid input! Please enter valid numerical values.")
+
 
     def get_manual_input(self):
         is_window_open = self.window_slider.get()
@@ -351,3 +399,4 @@ class Interface:
 
     def get_weather_conditions(self):
         return self.weather_conditions
+    
