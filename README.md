@@ -1,6 +1,6 @@
 # Smart Office in a Shoebox
 **Abstract:** The "Smart Office in a Shoebox" project aims to demonstrate how Internet of Things (IoT) devices and Artificial Intelligence (AI) can enhance the energy efficiency and comfort of office environments. This system integrates various sensors, including those for brightness, temperature, humidity, and water, to control actuators like lights, fans, and a cooling pad. The architecture includes an Arduino for low-level processing and a Raspberry Pi for higher-level functions, with AI planning facilitated by a connected laptop. User interfaces allow for real-time monitoring and manual interventions, ensuring flexibility and responsiveness. Prioritizing user comfort, energy savings, and system reliability, the project highlights how smart technologies can create healthier, more sustainable office spaces. Through the implementation and testing of this scaled-down model, the smart office in a shoebox demonstrates the potential for broader application of IoT and AI in actual office settings, aiming to reduce the substantial energy consumption and enhance the wellbeing of office workers.
-For more information, visit *report.pdf*
+For more information, visit [report.pdf](report.pdf)
 
 ## Requirements:
 Devices:
