@@ -15,7 +15,7 @@ class Interface:
         self.light = tk.StringVar()
         self.window_status = tk.StringVar()
         self.lights_status = tk.StringVar()
-        self.watercooling_status = tk.StringVar()
+        self.airconditioning_status = tk.StringVar()
         self.weather_temperature = tk.StringVar()
         self.weather_conditions = tk.StringVar()
         self.target_temperature = tk.StringVar()
@@ -102,26 +102,26 @@ class Interface:
         self.lights_status_label = ttk.Label(self.lights_frame, textvariable=self.lights_status, font=("Helvetica", 12))
         self.lights_status_label.grid(column=0, row=2, columnspan=3, padx=5, pady=5)
 
-        self.watercooling_frame = ttk.LabelFrame(self.actuator_frame, text="Air Conditioning", padding=(5, 5))
-        self.watercooling_frame.grid(column=0, row=2, padx=5, pady=5, sticky='NSEW')
+        self.airconditioning_frame = ttk.LabelFrame(self.actuator_frame, text="Air Conditioning", padding=(5, 5))
+        self.airconditioning_frame.grid(column=0, row=2, padx=5, pady=5, sticky='NSEW')
 
         # Add labels above the slider using grid for air conditioning
-        self.cooling_off_label = tk.Label(self.watercooling_frame, text="Off", font=("Helvetica", 8))
+        self.cooling_off_label = tk.Label(self.airconditioning_frame, text="Off", font=("Helvetica", 8))
         self.cooling_off_label.grid(column=0, row=0, padx=5)
 
-        self.cooling_default_label = tk.Label(self.watercooling_frame, text="Default", font=("Helvetica", 8))
+        self.cooling_default_label = tk.Label(self.airconditioning_frame, text="Default", font=("Helvetica", 8))
         self.cooling_default_label.grid(column=1, row=0, padx=5)
 
-        self.cooling_on_label = tk.Label(self.watercooling_frame, text="On", font=("Helvetica", 8))
+        self.cooling_on_label = tk.Label(self.airconditioning_frame, text="On", font=("Helvetica", 8))
         self.cooling_on_label.grid(column=2, row=0, padx=5)
 
         # Add the slider for air conditioning control using grid
-        self.cooling_slider = tk.Scale(self.watercooling_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.watercooling_status)
+        self.cooling_slider = tk.Scale(self.airconditioning_frame, from_=0, to=2, orient='horizontal', length=200, showvalue=False, command=self.airconditioning_status)
         self.cooling_slider.grid(column=0, row=1, columnspan=3, padx=5, pady=5)
         self.cooling_slider.set(1)  # Set to default
 
-        self.watercooling_status_label = ttk.Label(self.watercooling_frame, textvariable=self.watercooling_status, font=("Helvetica", 12))
-        self.watercooling_status_label.grid(column=0, row=2, columnspan=3, padx=5, pady=5)
+        self.airconditioning_status_label = ttk.Label(self.airconditioning_frame, textvariable=self.airconditioning_status, font=("Helvetica", 12))
+        self.airconditioning_status_label.grid(column=0, row=2, columnspan=3, padx=5, pady=5)
 
         # Add weather labels
         self.weather_temperature_frame = ttk.LabelFrame(self.weather_frame, text="Temperature", padding=(5, 5))
@@ -242,7 +242,7 @@ class Interface:
         # Initialize actuator status
         self.set_window_status("Closed")
         self.set_lights_status("Off")
-        self.set_watercooling_status("Off")
+        self.set_airconditioning_status("Off")
 
         # Initialize target values
         self.apply_settings()
@@ -285,12 +285,12 @@ class Interface:
             self.set_lights_status("On")
 
     # Function to update air conditioning status based on slider position
-    def update_watercooling_status(self, value):
+    def update_airconditioning_status(self, value):
         value = int(value)
         if value == 0:
-            self.set_watercooling_status("Off")
+            self.set_airconditioning_status("Off")
         elif value == 1:
-            self.set_watercooling_status("On")
+            self.set_airconditioning_status("On")
 
     # Callback functions to handle actuator status change
     def set_window_status(self, state):
@@ -299,8 +299,8 @@ class Interface:
     def set_lights_status(self, state):
         self.lights_status.set(state)
 
-    def set_watercooling_status(self, state):
-        self.watercooling_status.set(state)
+    def set_airconditioning_status(self, state):
+        self.airconditioning_status.set(state)
 
     def apply_settings(self):
         setting = self.settings_var.get()
@@ -391,8 +391,8 @@ class Interface:
     def get_window_status(self):
         return self.window_status
 
-    def get_watercooling_status(self):
-        return self.watercooling_status
+    def get_airconditioning_status(self):
+        return self.airconditioning_status
 
     def get_weather_temperature(self):
         return self.weather_temperature
