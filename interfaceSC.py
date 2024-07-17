@@ -306,12 +306,12 @@ class Interface:
         setting = self.settings_var.get()
         if setting == "Sparsam":
             self.target_temperature.set("20°C")
-            self.target_humidity.set("40%")
+            self.target_humidity.set("50%")
             self.target_light.set("50")
             self.custom_settings_frame.grid_remove()
         elif setting == "Komfort":
             self.target_temperature.set("22°C")
-            self.target_humidity.set("50%")
+            self.target_humidity.set("40%")
             self.target_light.set("70")
             self.custom_settings_frame.grid_remove()
         elif setting == "Custom":
