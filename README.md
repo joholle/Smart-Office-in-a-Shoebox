@@ -28,14 +28,22 @@ TODO: Soldering sketch
 ## Setup
 1. Pi:
  - Install and setup Mosquitto
+ - pip install pyvenv
+ - python -m venv env
+ - source env/bin/activate    - for Linux
  - pip install pyserial, mqtt
 2. Laptop:
  - Install and setup Mosquitto
+ - pip install pyvenv
+ - python -m venv env
+ - source env/bin/activate     - for Linux
  - pip install pddl, mqtt, tkinter
 
 ## Run Program
 1. Pi:
  - nohup mosquitto -v &
+ - source env/bin/activate     - for Linux
  - python main.py
 2. Laptop:
+ - source env/bin/activate     - for Linux
  - python main-laptop.py
