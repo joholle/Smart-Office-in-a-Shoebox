@@ -15,19 +15,17 @@ ff: search configuration is Enforced Hill-Climbing, if that fails then best-firs
 Metric is plan length.
 NO COST MINIMIZATION (and no cost-minimizing relaxed plans).
 
-Cueing down from goal distance:    2 into depth [1]
-                                   1            [1]
+Cueing down from goal distance:    1 into depth [1]
                                    0            
 
 ff: found legal plan as follows
-step    0: TURN_OFF_COOLER
-        1: REACH-GOAL
+step    0: NO_ACTION
 
-time spent:    0.12 seconds instantiating 3 easy, 0 hard action templates
-               0.00 seconds reachability analysis, yielding 5 facts and 4 actions
-               0.00 seconds creating final representation with 5 relevant facts, 0 relevant fluents
+time spent:    0.23 seconds instantiating 3 easy, 0 hard action templates
+               0.00 seconds reachability analysis, yielding 3 facts and 1 actions
+               0.00 seconds creating final representation with 1 relevant facts, 0 relevant fluents
                0.00 seconds computing LNF
                0.00 seconds building connectivity graph
-               0.01 seconds searching, evaluating 3 states, to a max depth of 1
-               0.13 seconds total time
+               0.00 seconds searching, evaluating 2 states, to a max depth of 1
+               0.23 seconds total time
 

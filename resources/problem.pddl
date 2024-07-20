@@ -1,6 +1,6 @@
 (define (problem pleasant_office_room)
     (:domain office_room)
     (:requirements :conditional-effects :disjunctive-preconditions :equality :fluents :negative-preconditions :strips :typing)
-    (:init (= (force_cooler) 1) (= (force_light) 1) (= (force_window) 1) (= (humidity) 58) (= (inside_temp) 26) (= (light) 111) (= (outside_temp) 22) (= (water_level) 0) (air_cooler_on) (is_raining) (not (light_on)) (windows_open) (z_end_predicate))
+    (:init (= (force_cooler) 1) (= (force_light) 1) (= (force_window) 1) (= (humidity) 51) (= (inside_temp) 27) (= (light) 109) (= (outside_temp) 22) (= (water_level) 30) (not (air_cooler_on)) (not (is_raining)) (not (light_on)) (windows_open) (z_end_predicate))
     (:goal (or (light_action_done) (window_action_done) (cooler_action_done) (no_action_possible)))
 )

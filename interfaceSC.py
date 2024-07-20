@@ -315,6 +315,9 @@ class Interface:
             self.target_light.set("70")
             self.custom_settings_frame.grid_remove()
         elif setting == "Custom":
+            self.custom_temperature.set(float(self.target_temperature.get().replace("°C", '')))
+            self.custom_humidity.set(float(self.target_humidity.get().replace("%", '')))
+            self.custom_light.set(float(self.target_light.get()))
             self.custom_settings_frame.grid()
 
     # def apply_custom_settings(self):
@@ -337,7 +340,7 @@ class Interface:
             # Check if the values are within the specified range
             valid_temp = 0 <= custom_temp <= 100
             valid_hum = 0 <= custom_hum <= 100
-            valid_light = custom_light > 0
+            valid_light = custom_light >= 0
 
             if valid_temp:
                 self.target_temperature.set(f"{custom_temp}°C")
