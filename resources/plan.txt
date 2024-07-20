@@ -8,5 +8,26 @@ problem 'PLEASANT_OFFICE_ROOM' defined
 
 
 translating negated cond for predicate WINDOWS_OPEN
-ff: goal can be simplified to FALSE. No plan will solve it
+translating negated cond for predicate AIR_COOLER_ON
+no metric specified.
+
+ff: search configuration is Enforced Hill-Climbing, if that fails then best-first search.
+Metric is plan length.
+NO COST MINIMIZATION (and no cost-minimizing relaxed plans).
+
+Cueing down from goal distance:    2 into depth [1]
+                                   1            [1]
+                                   0            
+
+ff: found legal plan as follows
+step    0: TURN_OFF_COOLER
+        1: REACH-GOAL
+
+time spent:    0.12 seconds instantiating 3 easy, 0 hard action templates
+               0.00 seconds reachability analysis, yielding 5 facts and 4 actions
+               0.00 seconds creating final representation with 5 relevant facts, 0 relevant fluents
+               0.00 seconds computing LNF
+               0.00 seconds building connectivity graph
+               0.01 seconds searching, evaluating 3 states, to a max depth of 1
+               0.13 seconds total time
 

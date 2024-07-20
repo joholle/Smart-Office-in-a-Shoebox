@@ -31,6 +31,7 @@ class ArduinoSerial:
             return print("invalid arduinoSerial.write argument: " + msg)
         
         self.serial.write(message_to_arduino)
+        time.sleep(1)
 
     def rotate_servo(self, degree):
         self.write("servo " + str(degree))

@@ -43,8 +43,8 @@ class Laptop:
             self.is_raining = self.is_raining
 
         # ----------------------------------------------- test values -----------------------------------------------
-        self.outside_temp = 20
-        # self.is_raining = True
+        self.outside_temp = 22
+        self.is_raining = True
         # -----------------------------------------------------------------------------------------------------------
 
         # get sensor readings
@@ -63,7 +63,7 @@ class Laptop:
 
         # get user interput for target values from interface
         target_temperature, target_humdity, target_light = self.interface.get_target_input()
-        self.planner.update_domain(target_light, target_humdity, target_temperature, 200)
+        self.planner.update_domain(target_light, target_humdity, target_temperature, 100)
 
         # ----------------------------------------------- test values -----------------------------------------------
         # self.outside_temp, self.is_raining = self.tester.get_weather_api()

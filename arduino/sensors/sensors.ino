@@ -21,6 +21,8 @@ Servo servo;
 String input = "";
 bool string_complete = false;
 int servo_degree = 0;
+const int SERVO_BOTTOM_THRESHOLD = 27;
+const int SERVO_TOP_THRESHOLD = 140;
 bool is_fan_active = false;
 bool is_cooler_active = false;
 bool is_lights_on = false;
@@ -28,8 +30,7 @@ bool is_lights_on = false;
 void setup() {
   Serial.begin(9600);
   servo.attach(SERVO_PIN);
-  servo.write(servo_degree);
-  delay(100);
+  servo_degree = rotate_servo(servo_degree);
   dht.begin();
 
   pinMode(COOLER_PIN, OUTPUT);
@@ -62,8 +63,7 @@ void loop() {
       Serial.println();
     } else if (input.startsWith("servo ")) {
       servo_degree = input.substring(6, 10).toInt();
-      servo.write(servo_degree);
-      delay(100);
+      servo_degree = rotate_servo(servo_degree);
     } else if (input == "fan on\n") {
       is_fan_active = true;
       digitalWrite(FAN_PIN, HIGH);
@@ -92,6 +92,17 @@ void loop() {
   //     servo.write(i*60);
   //     delay(100);
   // }
+}
+
+int rotate_servo(int degree) {
+  if (degree < SERVO_BOTTOM_THRESHOLD) {
+    degree = SERVO_BOTTOM_THRESHOLD;
+  } else if (degree >= SERVO_TOP_THRESHOLD) {
+    degree = SERVO_TOP_THRESHOLD;
+  }
+  servo.write(degree);
+  delay(100);
+  return degree;
 }
 
 void serialEvent() {
