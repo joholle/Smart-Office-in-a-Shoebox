@@ -32,6 +32,9 @@ void setup() {
   delay(100);
   dht.begin();
 
+  pinMode(COOLER_PIN, OUTPUT);
+  pinMode(FAN_PIN, OUTPUT);
+  pinMode(LIGHT_PIN, OUTPUT);
   digitalWrite(COOLER_PIN, LOW);
   digitalWrite(FAN_PIN, LOW);
   digitalWrite(LIGHT_PIN, LOW);

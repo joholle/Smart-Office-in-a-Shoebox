@@ -41,7 +41,12 @@ class Laptop:
         except: 
             self.outside_temp = self.outside_temp
             self.is_raining = self.is_raining
-        
+
+        # ----------------------------------------------- test values -----------------------------------------------
+        self.outside_temp = 20
+        # self.is_raining = True
+        # -----------------------------------------------------------------------------------------------------------
+
         # get sensor readings
         readings = self.get_readings()
         if readings is None:
@@ -58,7 +63,7 @@ class Laptop:
 
         # get user interput for target values from interface
         target_temperature, target_humdity, target_light = self.interface.get_target_input()
-        self.planner.update_domain(target_light, target_humdity, target_temperature, 20)
+        self.planner.update_domain(target_light, target_humdity, target_temperature, 200)
 
         # ----------------------------------------------- test values -----------------------------------------------
         # self.outside_temp, self.is_raining = self.tester.get_weather_api()
@@ -75,8 +80,8 @@ class Laptop:
 
         # process readings with pddl
         self.planner.update_problem(
-            set_light=readings["light"], set_humidity=readings["humidity"], set_inside_temp=readings["temperature"], set_water_level=readings["water"], 
-            set_outside_temp=self.outside_temp,
+            set_light=readings["light"], set_humidity=readings["humidity"], set_inside_temp=int(readings["temperature"]), set_water_level=readings["water"], 
+            set_outside_temp=int(self.outside_temp),
             set_is_raining=self.is_raining,
             set_force_light=set_force_light, set_force_window=set_force_window, set_force_cooler=set_force_cooler, # set_force_water=False,
             light_on_state=self.internal_state["light_on"], windows_open_state=self.internal_state["windows_open"], air_cooler_on_state=self.internal_state["air_cooler_on"], # water_spender_on_state=self.internal_state["water_spender_on"]
@@ -100,7 +105,7 @@ class Laptop:
     def update_state(self, action):
         self.interface.update_window_status(self.internal_state["windows_open"])
         self.interface.update_lights_status(self.internal_state["light_on"])
-        self.interface.update_watercooling_status(self.internal_state["air_cooler_on"])
+        self.interface.update_airconditioning_status(self.internal_state["air_cooler_on"])
         if action == "turn_on_light" or action == "force_on_light":
             self.internal_state["light_on"] = True
             self.mqtt.publish(str(self.id) + " turn on lights")

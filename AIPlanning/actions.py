@@ -14,7 +14,7 @@ import json
 LIGHT_THRESHOLD = 200
 HUMIDITY_THRESHOLD = 70
 TEMPERATURE_THRESHOLD = 25
-WATER_LEVEL_THRESHOLD = 20
+WATER_LEVEL_THRESHOLD = 200
 with open("AIPlanning/THRESHOLDS.json", "r") as json_file:
     thresholds_json = json.load(json_file)
     LIGHT_THRESHOLD = thresholds_json["LIGHT_THRESHOLD"]
@@ -125,13 +125,23 @@ force_off_light = Action(
 open_window = Action(
     "open_window",
     parameters=[],
-    precondition=(GreaterThan(humidity, NumericValue(HUMIDITY_THRESHOLD)) | GreaterThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open)  & EqualTo(force_window, NumericValue(1)),
+    precondition=
+        (GreaterThan(humidity, NumericValue(HUMIDITY_THRESHOLD)) | GreaterThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD)))
+        & (Not(is_raining) | LesserThan(water_level, NumericValue(WATER_LEVEL_THRESHOLD)))
+        & GreaterThan(inside_temp, outside_temp)
+        & Not(windows_open)
+        & EqualTo(force_window, NumericValue(1)),
     effect=windows_open&window_action_done
 )
 close_window = Action(
     "close_window",
     parameters=[],
-    precondition=((LesserThan(humidity, NumericValue(HUMIDITY_THRESHOLD))&LesserThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD))&windows_open)|(GreaterThan(water_level, NumericValue(WATER_LEVEL_THRESHOLD))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open)) & EqualTo(force_window, NumericValue(1)),
+    precondition=
+        ((LesserThan(humidity, NumericValue(HUMIDITY_THRESHOLD)) & LesserThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD)))
+        | (is_raining & GreaterThan(water_level, NumericValue(WATER_LEVEL_THRESHOLD)))
+        | (LesserThan(inside_temp, outside_temp)))
+        & windows_open
+        & EqualTo(force_window, NumericValue(1)),
     effect=Not(windows_open)&window_action_done
 )
 force_close_window = Action(
@@ -178,21 +188,35 @@ no_action = Action(
     parameters=[],
     precondition=Not(
         # no light action possible
-        (LesserThan(light, NumericValue(LIGHT_THRESHOLD)) & Not(light_on) & EqualTo(force_light, NumericValue(1))) |
+        (LesserThan(light, NumericValue(LIGHT_THRESHOLD))
+            & Not(light_on) & EqualTo(force_light, NumericValue(1))) |
         (Not(light_on) & EqualTo(force_light, NumericValue(2))) |
         (light_on & EqualTo(force_light, NumericValue(0))) |
 
         # no window action possible
-        (GreaterThan(humidity, NumericValue(HUMIDITY_THRESHOLD)) | GreaterThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD))) & Not(is_raining) & GreaterThan(inside_temp, outside_temp) & Not(windows_open)  & EqualTo(force_window, NumericValue(1)) |
-        ((LesserThan(humidity, NumericValue(HUMIDITY_THRESHOLD))&LesserThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD))&windows_open)|(GreaterThan(water_level, NumericValue(WATER_LEVEL_THRESHOLD))&is_raining&windows_open)|(LesserThan(inside_temp, outside_temp)&windows_open)) & EqualTo(force_window, NumericValue(1)) |
-        windows_open & EqualTo(force_window, NumericValue(0)) |
-        Not(windows_open) & EqualTo(force_window, NumericValue(2)) |
+        (GreaterThan(humidity, NumericValue(HUMIDITY_THRESHOLD)) | GreaterThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD)))
+            & (Not(is_raining) | LesserThan(water_level, NumericValue(WATER_LEVEL_THRESHOLD)))
+            & GreaterThan(inside_temp, outside_temp)
+            & Not(windows_open)
+            & EqualTo(force_window, NumericValue(1)) |
+        ((LesserThan(humidity, NumericValue(HUMIDITY_THRESHOLD))&LesserThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD)))
+            | (GreaterThan(water_level, NumericValue(WATER_LEVEL_THRESHOLD)))
+            | (LesserThan(inside_temp, outside_temp)))
+            & windows_open
+            & EqualTo(force_window, NumericValue(1)) |
+        (windows_open & EqualTo(force_window, NumericValue(0))) |
+        (Not(windows_open) & EqualTo(force_window, NumericValue(2))) |
 
         # no cooler action possible
-        GreaterThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD))&LesserThan(inside_temp, outside_temp)&Not(air_cooler_on) & EqualTo(force_cooler, NumericValue(1)) |
-        (LesserThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD))|GreaterThan(inside_temp, outside_temp))&air_cooler_on & EqualTo(force_cooler, NumericValue(1)) |
-        Not(air_cooler_on) & EqualTo(force_cooler, NumericValue(2)) |
-        air_cooler_on & EqualTo(force_cooler, NumericValue(0))
+        (GreaterThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD))
+            & LesserThan(inside_temp, outside_temp)
+            & Not(air_cooler_on)
+            & EqualTo(force_cooler, NumericValue(1))) |
+        (LesserThan(inside_temp, NumericValue(TEMPERATURE_THRESHOLD)) | GreaterThan(inside_temp, outside_temp))
+            & air_cooler_on
+            & EqualTo(force_cooler, NumericValue(1)) |
+        (Not(air_cooler_on) & EqualTo(force_cooler, NumericValue(2))) |
+        (air_cooler_on & EqualTo(force_cooler, NumericValue(0)))
     ),
     effect=no_action_possible
 )

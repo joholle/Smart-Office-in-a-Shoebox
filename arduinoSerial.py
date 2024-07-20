@@ -2,7 +2,7 @@ import serial, json, time
 
 class ArduinoSerial:
     def __init__(self):
-        com_port = '/dev/ttyACM0'
+        com_port = '/dev/ttyUSB0'
         baudrate = 9600
         timeout = 0.1
         # listen and send commands to arduino serial port 9600
